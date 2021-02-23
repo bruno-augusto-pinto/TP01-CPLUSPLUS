@@ -50,7 +50,9 @@
         string usuario, senha;
         cout << endl << "INSIRA O USUARIO: ";
         cin >> usuario;
-        senha = setMascara("INSIRA A SENHA: ");
+        cout << endl << "INSIRA A SENHA: ";
+        cin >> senha;
+        //senha = setMascara("INSIRA A SENHA: ");
         switch (verificaUsuarios(usuario, senha)) {
             case 'A':
                 cout << endl << "Logou Admin" << endl; 
@@ -74,7 +76,9 @@
         string usuario, senha;
         cout << endl << "INSIRA O USUARIO: ";
         cin >> usuario;
-        senha = setMascara("INSIRA A SENHA: ");
+        cout << endl << "INSIRA A SENHA: ";
+        cin >> senha;
+        //senha = setMascara("INSIRA A SENHA: ");
         if(cadastraUsuario(usuario, senha) == -1){
             EXIT_FAILURE;
         }else if (cadastraUsuario(usuario, senha) == 0) {
@@ -82,49 +86,4 @@
         }else{
             cout << endl << "USUARIO CADASTRADO COM SUCESSO!";
         }
-    }
-
-    int Clinica::getch(){
-        int ch;
-        struct termios t_old, t_new;
-
-        tcgetattr(STDIN_FILENO, &t_old);
-        t_new = t_old;
-        t_new.c_lflag &= ~(ICANON | ECHO);
-        tcsetattr(STDIN_FILENO, TCSANOW, &t_new);
-
-        ch = getchar();
-
-        tcsetattr(STDIN_FILENO, TCSANOW, &t_old);
-        return ch;
-    }
-
-    string Clinica::setMascara(const char *prompt)
-    {
-        const char BACKSPACE=127;
-        const char RETURN=10;
-
-        string senha;
-        unsigned char ch=0;
-
-        cout <<prompt<<endl;
-
-        while((ch=getch())!=RETURN)
-        {
-            if(ch==BACKSPACE)
-            {
-            if(senha.length()!=0)
-              {
-                 cout <<"\b \b";
-                 senha.resize(senha.length()-1);
-              }
-            }
-            else
-            {
-                senha+=ch;
-                cout <<'*';
-            }
-        }
-        cout <<endl;
-        return senha;
     }

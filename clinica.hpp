@@ -1,12 +1,9 @@
 #ifndef clinica_hpp
 #define clinica_hpp
 
-#include <termios.h>
-#include <stdio.h>
-#include "arquivos.hpp"
 #include <stdio.h>
 #include <string.h>
-#include <unistd.h>
+#include "arquivos.hpp"
 
 using namespace std;
 
@@ -27,8 +24,6 @@ class Clinica {
 
         void cadastro();
 
-        int getch();
-
-        string setMascara(const char*);
+        //string setMascara(const char*);
 };
 #endif
