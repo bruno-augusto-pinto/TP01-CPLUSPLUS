@@ -50,16 +50,10 @@
         string usuario, senha;
         cout << endl << "INSIRA O USUARIO: ";
         cin >> usuario;
-        cout << endl << "INSIRA A SENHA: ";
-        setMascara( (char*) senha.c_str());
-        switch (verificaUsuarios(usuario, senha))
-        {
+        senha = setMascara("INSIRA A SENHA: ");
+        switch (verificaUsuarios(usuario, senha)) {
             case 'A':
                 cout << endl << "Logou Admin" << endl; 
-            break;
-
-            case 'B':
-                cout << endl << "Logou Assistente" << endl;
             break;
 
             case 'G':
@@ -80,7 +74,7 @@
         string usuario, senha;
         cout << endl << "INSIRA O USUARIO: ";
         cin >> usuario;
-        setMascara( (char*) senha.c_str());
+        senha = setMascara("INSIRA A SENHA: ");
         if(cadastraUsuario(usuario, senha) == -1){
             EXIT_FAILURE;
         }else if (cadastraUsuario(usuario, senha) == 0) {
@@ -90,50 +84,47 @@
         }
     }
 
-    void Clinica::setMascara(char* senha){
-        struct termios oflags, nflags;
+    int Clinica::getch(){
+        int ch;
+        struct termios t_old, t_new;
 
-        //disabling echo
-        tcgetattr(fileno(stdin), &oflags);
-        nflags = oflags;
-        nflags.c_lflag &= ~ECHO;
-        nflags.c_lflag |= ECHONL;
+        tcgetattr(STDIN_FILENO, &t_old);
+        t_new = t_old;
+        t_new.c_lflag &= ~(ICANON | ECHO);
+        tcsetattr(STDIN_FILENO, TCSANOW, &t_new);
 
-        if (tcsetattr(fileno(stdin), TCSANOW, &nflags) != 0) {
-            perror("tcsetattr");
-            EXIT_FAILURE;
-        }
+        ch = getchar();
 
-        cout << endl << "INSIRA A SENHA: ";
-        cin >> senha;
-        fgets(senha, sizeof(senha), stdin);
-        //while(fgets(senha, sizeof(senha), stdin != GetAsynKeyState(VK_RETURN)){}
-        senha[strlen(senha) - 1] = 0;
-        
-        //restore terminal
-        if (tcsetattr(fileno(stdin), TCSANOW, &oflags) != 0) {
-            perror("tcsetattr");
-            EXIT_FAILURE;
-        }
+        tcsetattr(STDIN_FILENO, TCSANOW, &t_old);
+        return ch;
     }
 
-    /*
+    string Clinica::setMascara(const char *prompt)
+    {
+        const char BACKSPACE=127;
+        const char RETURN=10;
+
+        string senha;
+        unsigned char ch=0;
+
+        cout <<prompt<<endl;
+
         while((ch=getch())!=RETURN)
         {
             if(ch==BACKSPACE)
             {
-                if(password.length()!=0)
-                {
-                    if(show_asterisk)
-                        cout <<"\b \b";
-                        password.resize(password.length()-1);
-                }
+            if(senha.length()!=0)
+              {
+                 cout <<"\b \b";
+                 senha.resize(senha.length()-1);
+              }
             }
-             else
+            else
             {
-             password+=ch;
-             if(show_asterisk)
-                 cout <<'*';
+                senha+=ch;
+                cout <<'*';
             }
         }
-    */
+        cout <<endl;
+        return senha;
+    }
