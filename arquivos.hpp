@@ -16,7 +16,7 @@ using namespace std::experimental::filesystem::v1;
 
 void setAdmin();
 
-char verificaUsuarios(const string&, const string&);
+char verificaLogin(const string&, const string&);
 
 int cadastraUsuario(const string&, const string&);
 

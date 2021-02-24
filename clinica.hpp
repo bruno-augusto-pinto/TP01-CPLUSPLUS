@@ -24,6 +24,19 @@ class Clinica {
 
         void cadastro();
 
-        //string setMascara(const char*);
+        void menuAdministrador();
+
+        void crudUsuario();
+
+        void crudFuncionario();
+
+        void menuAssistenteAdministrativo();
+
+        void menuUsuarioGeral();
+
+        void menuAgenda();
+
+        void opcoesdaConta();
+
 };
 #endif

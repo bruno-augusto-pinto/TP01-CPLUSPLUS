@@ -16,7 +16,7 @@ void setAdmin()
     }
 }
 
-char verificaUsuarios(const string& usuario, const string& senha)
+char verificaLogin(const string& usuario, const string& senha)
 {
     if(!fs::exists("usuarios.bin"))
     {
