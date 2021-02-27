@@ -11,8 +11,8 @@
 
     int main(void)
     {
-        setAdmin();
         Clinica principal;
+        principal.setFiles();
         cout << "BEM VINDO AO SISTEMA CLINICO-OTODONTARIO." << endl;
         principal.menuPrincipal();
         EXIT_SUCCESS;
@@ -49,13 +49,17 @@
 
     void Clinica::login()
     {
-        string usuario, senha;
+        string usuario, senha, arquivo = "usuarios.bin";
         cout << endl << "INSIRA O USUARIO: ";
         cin >> usuario;
         cout << endl << "INSIRA A SENHA: ";
         cin >> senha;
-        //senha = setMascara("INSIRA A SENHA: ");
-        switch (verificaLogin(usuario, senha)) {
+        Usuario user(usuario, senha, '0');
+        if (verifica<Usuario, string>(user, arquivo) != 1){
+            cout << endl << "USUARIO OU SENHA INVALIDOS!" << endl;
+        }
+
+        switch (user.getTipo()) {
             case 'A':
                 this->menuAdministrador();
             break;
@@ -80,7 +84,7 @@
 
     void Clinica::cadastro(bool admin)
     {
-        string usuario, senha;
+        string usuario, senha, arquivo = "usuarios.bin";
         char tipo;
         cout << endl << "INSIRA O USUARIO: ";
         cin >> usuario;
@@ -114,9 +118,11 @@
         }else{
             tipo = 'G';
         }
-        if(cadastraUsuario(usuario, senha, tipo) == 0){
-            cout << endl << "USUARIO JA CADASTRADO!" << endl;
+        Usuario user(usuario, senha, tipo);
+        if (verifica<Usuario, string>(user, arquivo) == -1 || 1){
+           cout << endl << "USUARIO JA CADASTRADO!" << endl;
         }else{
+            registra<Usuario, string>(user, arquivo);
             cout << endl << "USUARIO CADASTRADO COM SUCESSO!" << endl;
         }
     }
@@ -296,3 +302,15 @@
 
     }
 
+    void Clinica::setFiles(){
+        if(!fs::exists("usuarios.bin"))
+        {
+            Usuario admin("admin", "admin", 'A');
+            fstream criar ("usuarios.bin", ios::app | ios::binary);
+            criar.close();
+            ofstream out("usuarios.bin");
+            out << admin;
+            out.flush();
+            out.close();
+        }
+    }

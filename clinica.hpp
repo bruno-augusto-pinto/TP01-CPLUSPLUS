@@ -38,5 +38,7 @@ class Clinica {
 
         void opcoesdaConta();
 
+        void setFiles();
+
 };
 #endif

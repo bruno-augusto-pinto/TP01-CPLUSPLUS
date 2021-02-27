@@ -1,5 +1,5 @@
-#ifndef usuarios_hpp
-#define usuarios_hpp
+#ifndef usuario_hpp
+#define usuario_hpp
 
 #include <iostream>
 #include <stdlib.h>
