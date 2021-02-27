@@ -1,23 +1,23 @@
 # SISTEMA CLÍNICO ODONTOLÓGICO
 
-*COMANDO PARA COMPILAR O CODIGO (C++17 É REQUERIDO):*
+## *COMANDO PARA COMPILAR O CODIGO (C++17 É REQUERIDO):*
 
 `g++ -std=c++17 *.cpp -lstdc++fs -o [PROGRAMA]`
 
-*COMO EXECUTAR EM CMD:* 
+## *COMO EXECUTAR EM CMD:* 
 
 `[PROGRAMA]`
 
-*BASH E POWERSHELL:* 
+## *BASH E POWERSHELL:* 
 
 `./PROGRAMA`
 
-##NAVEGAÇÃO
+## NAVEGAÇÃO
 
 Navegue pelo menu através do teclado, selecionado as opções de Input oferecidas
 pelo sistema.
 
-*Desenvolvido por:*
+## *Desenvolvido por:*
 
 [@Arnaldo Dias](https://github.com/Arnaldias)
 
