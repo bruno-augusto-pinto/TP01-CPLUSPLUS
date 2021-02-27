@@ -16,45 +16,96 @@ using namespace std::experimental::filesystem::v1;
 
 namespace fs = std::experimental::filesystem::v1;
 
-template <typename Objeto, typename Arquivo>
-int verifica(Objeto& objeto, Arquivo nome){
-    bool igual = false;
+template <typename Arquivo>
+void existe(Arquivo nome){
     if(!fs::exists(nome.c_str()))
     {
         perror("ERRO: ARQUIVO NAO EXISTE!");
         EXIT_FAILURE;
-    }
+    }  
+}
+
+template <typename Objeto, typename Arquivo>
+void setObjeto(Arquivo nome, vector<Objeto>& objetos){
     ifstream in (nome.c_str());
-    vector<Objeto> objetos;
     Objeto temporario;
     while(!in.eof()){
         in >> temporario;
         objetos.push_back(temporario);
     }
     in.close();
+}
 
+template <typename Objeto, typename Arquivo, typename Operacao>
+int verifica(Objeto& objeto, Arquivo nome, Operacao tipo){
+    existe<string>(nome);
+    vector<Objeto> objetos;
+    if (typeid(objeto).name() == typeid(Usuario).name() ){
+        setObjeto<Usuario, string>(nome, objetos);
+    }
     for (Objeto x : objetos){
         if (typeid(objeto).name() == typeid(Usuario).name() ){
-            if (x.getUsuario() == objeto.getUsuario() && x.getSenha() == objeto.getSenha()){
-                objeto = x;
-                return 1;
-            }else if (x.getUsuario() == objeto.getUsuario()){
-                igual = true;
+            switch (tipo)
+            {
+                case 'L':
+                    if (x.getUsuario() == objeto.getUsuario() && x.getSenha() == objeto.getSenha()){
+                        objeto = x;
+                        return 1;
+                    }
+                break;
+
+                case 'C':
+                    if (x.getUsuario() == objeto.getUsuario()){
+                        return 1;
+                    }
+                break;
             }
         }
-    }
-    if (igual){
-        return -1;
     }
     return 0;
 }
 
 template <typename Objeto, typename Arquivo>
 void registra(const Objeto& objeto, Arquivo nome){
+    existe<string>(nome);
     ofstream out (nome.c_str(), ios::app);
     out << objeto;
     out.flush();
     out.close();
+}
+
+template <typename Objeto, typename Arquivo>
+void printFile(Arquivo nome){
+    existe<string>(nome);
+    if (typeid(Objeto).name() == typeid(Usuario).name() ){
+        cout << endl;
+        printf("|%5s|%14s|", "NOME ", "TIPO DE CONTA ");
+        cout << endl;
+    }
+    ifstream in (nome.c_str());
+    Objeto x;
+    while(in >> x){
+        if (typeid(Objeto).name() == typeid(Usuario).name() ){
+            string tipo;
+            switch (x.getTipo())
+            {
+                case 'A':
+                    tipo = "Administrador";
+                break;
+
+                case 'B':
+                    tipo = "Assistente";
+                break;
+
+                case 'G':
+                    tipo = "Geral";
+                break;
+            }
+            printf("|%5s|%14s|", x.getUsuario().c_str(), tipo.c_str());
+            cout << endl;
+        }
+    }
+    in.close();
 }
 
 #endif

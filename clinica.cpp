@@ -1,8 +1,3 @@
-//COMANDO PARA COMPILAR O CODIGO (C++17 É REQUERIDO):
-//// g++ -std=c++17 *.cpp -lstdc++fs -o PROGRAMA
-///// COMO EXECUTAR EM CMD: PROGRAMA 
-/////// BASH E POWERSHELL: ./PROGRAMA 
-
 #include "clinica.hpp"
 
     Clinica::Clinica(){}
@@ -55,7 +50,7 @@
         cout << endl << "INSIRA A SENHA: ";
         cin >> senha;
         Usuario user(usuario, senha, '0');
-        if (verifica<Usuario, string>(user, arquivo) != 1){
+        if (!verifica<Usuario, string, char>(user, arquivo, 'L')){
             cout << endl << "USUARIO OU SENHA INVALIDOS!" << endl;
         }
 
@@ -119,7 +114,7 @@
             tipo = 'G';
         }
         Usuario user(usuario, senha, tipo);
-        if (verifica<Usuario, string>(user, arquivo) == -1 || 1){
+        if (verifica<Usuario, string, char>(user, arquivo, 'C')){
            cout << endl << "USUARIO JA CADASTRADO!" << endl;
         }else{
             registra<Usuario, string>(user, arquivo);
@@ -160,6 +155,7 @@
     void Clinica::crudUsuario()
     {
         int opc = -1;
+        string arquivo = "usuarios.bin";
         cout << endl <<"MENU ADMINISTRATIVO DE USUARIOS";
         do {
             
@@ -170,10 +166,11 @@
             switch (opc)
             {
                 case 1:
-                    cadastro(true, "usuarios.bin");
+                    cadastro(true, arquivo);
                 break;
 
                 case 2:
+                    printFile<Usuario, string>(arquivo);
                     //https://stackoverflow.com/questions/6755250/format-output-in-a-table-c
                 break;
 

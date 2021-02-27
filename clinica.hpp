@@ -1,8 +1,6 @@
 #ifndef clinica_hpp
 #define clinica_hpp
 
-#include <stdio.h>
-#include <string.h>
 #include "arquivos.hpp"
 
 using namespace std;
