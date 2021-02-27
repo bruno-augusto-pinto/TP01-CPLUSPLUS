@@ -28,11 +28,11 @@
             switch (opc)
             {
                 case 1:
-                    this->login();
+                    this->login("usuarios.bin");
                 break;
 
                 case 2:
-                    this->cadastro(false); 
+                    this->cadastro(false, "usuarios.bin"); 
                 break;
 
                 case 0:
@@ -47,9 +47,9 @@
         while(opc != 0);
     }
 
-    void Clinica::login()
+    void Clinica::login(const string& arquivo)
     {
-        string usuario, senha, arquivo = "usuarios.bin";
+        string usuario, senha;
         cout << endl << "INSIRA O USUARIO: ";
         cin >> usuario;
         cout << endl << "INSIRA A SENHA: ";
@@ -82,9 +82,9 @@
         }
     }
 
-    void Clinica::cadastro(bool admin)
+    void Clinica::cadastro(bool admin, const string& arquivo)
     {
-        string usuario, senha, arquivo = "usuarios.bin";
+        string usuario, senha;
         char tipo;
         cout << endl << "INSIRA O USUARIO: ";
         cin >> usuario;
@@ -170,11 +170,11 @@
             switch (opc)
             {
                 case 1:
-                    cadastro(true);
+                    cadastro(true, "usuarios.bin");
                 break;
 
                 case 2:
-
+                    //https://stackoverflow.com/questions/6755250/format-output-in-a-table-c
                 break;
 
                 case 3:
@@ -312,5 +312,11 @@
             out << admin;
             out.flush();
             out.close();
+        }
+
+        if(!fs::exists("funcionarios.bin"))
+        {
+            fstream criar ("funcionarios.bin", ios::app | ios::binary);
+            criar.close();
         }
     }

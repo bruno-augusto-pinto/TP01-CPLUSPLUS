@@ -20,9 +20,9 @@ class Clinica {
         void menuPrincipal();
 
         //https://cplusplus.com/articles/E6vU7k9E/
-        void login();
+        void login(const string&);
 
-        void cadastro(bool);
+        void cadastro(bool, const string&);
 
         void menuAdministrador();
 

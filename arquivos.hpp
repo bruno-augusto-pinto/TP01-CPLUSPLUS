@@ -11,7 +11,7 @@
 #include "usuario.hpp"
 
 using namespace std;
-
+ 
 using namespace std::experimental::filesystem::v1;
 
 namespace fs = std::experimental::filesystem::v1;
@@ -27,7 +27,6 @@ int verifica(Objeto& objeto, Arquivo nome){
     ifstream in (nome.c_str());
     vector<Objeto> objetos;
     Objeto temporario;
-    //cout << endl << typeid(objeto).name() << endl;
     while(!in.eof()){
         in >> temporario;
         objetos.push_back(temporario);
