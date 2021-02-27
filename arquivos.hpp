@@ -18,6 +18,6 @@ void setAdmin();
 
 char verificaLogin(const string&, const string&);
 
-int cadastraUsuario(const string&, const string&);
+int cadastraUsuario(const string&, const string&, const char&);
 
 #endif

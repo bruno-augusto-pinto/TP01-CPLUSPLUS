@@ -32,7 +32,7 @@
                 break;
 
                 case 2:
-                    this->cadastro(); 
+                    this->cadastro(false); 
                 break;
 
                 case 0:
@@ -78,30 +78,56 @@
         }
     }
 
-    void Clinica::cadastro()
+    void Clinica::cadastro(bool admin)
     {
         string usuario, senha;
+        char tipo;
         cout << endl << "INSIRA O USUARIO: ";
         cin >> usuario;
         cout << endl << "INSIRA A SENHA: ";
         cin >> senha;
-        //senha = setMascara("INSIRA A SENHA: ");
-        if(cadastraUsuario(usuario, senha) == -1){
-            EXIT_FAILURE;
-        }else if (cadastraUsuario(usuario, senha) == 0) {
-            cout << endl << "USUARIO JA CADASTRADO!";
+        if (admin){
+            int opc = -1;
+            do {
+                cout << endl << "(1) ADMINISTRADOR" << endl << "(2) ASSISTENTE ADMINISTRATIVO" << endl << "(3) USUARIO GERAL" << endl << "ESCOLHA: ";
+                cin >> opc;
+                switch (opc) {
+                    case 1:
+                        tipo = 'A';
+                        opc = 0;
+                    break;
+
+                    case 2:
+                        tipo = 'B';
+                        opc = 0;
+                    break;
+
+                    case 3:
+                        tipo = 'G';
+                        opc = 0;
+                    break;
+
+                    default:
+                        cout << "INVALIDO! TENTE NOVAMENTE!" << endl;
+                }
+            }while(opc != 0);
         }else{
-            cout << endl << "USUARIO CADASTRADO COM SUCESSO!";
+            tipo = 'G';
+        }
+        if(cadastraUsuario(usuario, senha, tipo) == 0){
+            cout << endl << "USUARIO JA CADASTRADO!" << endl;
+        }else{
+            cout << endl << "USUARIO CADASTRADO COM SUCESSO!" << endl;
         }
     }
 
     void Clinica::menuAdministrador()
     {
         int opc = -1;
-        cout << endl << "MENU DO ADMINISTRADOR" << endl;
+        cout << endl << "MENU DO ADMINISTRADOR";
         do {
-            cout << "(1) ADMINISTRAR USUARIOS" << endl << "(2) ADMNISTRAR FUNCIONARIOS"<< endl; 
-            cout << "(0) FINALIZAR EXECUÇÃO" << endl << "ESCOLHA: ";
+            cout << endl << "(1) ADMINISTRAR USUARIOS" << endl << "(2) ADMNISTRAR FUNCIONARIOS"; 
+            cout << endl << "(0) FINALIZAR EXECUÇÃO" << endl << "ESCOLHA: ";
             cin >> opc;
             switch (opc)
             {
@@ -127,13 +153,79 @@
 
     void Clinica::crudUsuario()
     {
+        int opc = -1;
+        cout << endl <<"MENU ADMINISTRATIVO DE USUARIOS";
+        do {
+            
+            cout << endl << "(1) CADASTRAR UM NOVO USUARIO" << endl << "(2) LISTAR USUARIOS";
+            cout << endl << "(3) ALTERAR DADOS DE UM USUARIO" << endl << "(4) REMOVER UM USUARIO";
+            cout << endl << "(0) SAIR DO MENU" << endl << "ESCOLHA: ";
+            cin >> opc;
+            switch (opc)
+            {
+                case 1:
+                    cadastro(true);
+                break;
 
+                case 2:
 
+                break;
+
+                case 3:
+
+                break;
+
+                case 4:
+
+                break;
+
+                case 0:
+                    cout << endl << "RETORNANDO AO MENU ADMINISTRATIVO." << endl;
+                break;
+            
+                default:
+                    cout << endl << "INVALIDO! TENTE NOVAMENTE!" << endl;
+                break;
+            }
+        }while(opc != 0);
     }
 
     void Clinica::crudFuncionario()
     {
-        
+        int opc = -1;
+        cout << endl <<"MENU ADMINISTRATIVO DE FUNCIONARIOS";
+        do {
+            cout << endl << "(1) CADASTRAR UM NOVO FUNCIONARIO" << endl << "(2) LISTAR FUNCIONARIOS";
+            cout << endl << "(3) ALTERAR DADOS DE UM FUNCIONARIO" << endl << "(4) REMOVER UM FUNCIONARIO";
+            cout << endl << "(0) SAIR DO MENU" << endl << "ESCOLHA: ";
+            cin >> opc;
+            switch (opc)
+            {
+                case 1:
+
+                break;
+
+                case 2:
+
+                break;
+
+                case 3:
+
+                break;
+
+                case 4:
+
+                break;
+
+                case 0:
+                    cout << endl << "RETORNANDO AO MENU ADMINISTRATIVO." << endl;
+                break;
+            
+                default:
+                    cout << endl << "INVALIDO! TENTE NOVAMENTE!" << endl;
+                break;
+            }
+        }while(opc != 0);        
     }
 
     void Clinica::menuAssistenteAdministrativo()

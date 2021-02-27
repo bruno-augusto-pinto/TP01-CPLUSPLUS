@@ -22,7 +22,7 @@ class Clinica {
         //https://cplusplus.com/articles/E6vU7k9E/
         void login();
 
-        void cadastro();
+        void cadastro(bool);
 
         void menuAdministrador();
 

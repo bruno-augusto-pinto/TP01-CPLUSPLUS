@@ -49,12 +49,12 @@ char verificaLogin(const string& usuario, const string& senha)
     }
 }
 
-int cadastraUsuario(const string& usuario, const string& senha)
+int cadastraUsuario(const string& usuario, const string& senha, const char& tipo)
 {
     if(!fs::exists("usuarios.bin"))
     {
         perror("ERRO: ARQUIVO NAO EXISTE!");
-        return -1;
+        EXIT_FAILURE;
     }
     else
     {
@@ -80,10 +80,10 @@ int cadastraUsuario(const string& usuario, const string& senha)
         ofstream out ("usuarios.bin", ios::app);
         user.setUsuario(usuario);
         user.setSenha(senha);
-        user.setTipo('G');
+        user.setTipo(tipo);
         out << user;
         out.flush();
         out.close();
-        return 1;
-    }   
+    }  
+    return 1; 
 }
