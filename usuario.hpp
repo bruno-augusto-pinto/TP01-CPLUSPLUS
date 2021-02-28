@@ -34,6 +34,7 @@ class Usuario{
         friend ostream& operator<<(ostream&, const Usuario&);
 
         friend istream& operator>>(istream&, Usuario&);
+
 };
 
 #endif

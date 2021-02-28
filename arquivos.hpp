@@ -7,6 +7,7 @@
 #include <fstream>
 #include <vector>
 #include <experimental/filesystem> 
+#include <iterator>
 
 #include "usuario.hpp"
 
@@ -34,6 +35,15 @@ void setObjeto(Arquivo nome, vector<Objeto>& objetos){
         objetos.push_back(temporario);
     }
     in.close();
+}
+
+template <typename Objeto, typename Arquivo>
+void registra(const Objeto& objeto, Arquivo nome){
+    existe<string>(nome);
+    ofstream out (nome.c_str(), ios::app);
+    out << objeto;
+    out.flush();
+    out.close();
 }
 
 template <typename Objeto, typename Arquivo, typename Operacao>
@@ -65,17 +75,40 @@ int verifica(Objeto& objeto, Arquivo nome, Operacao tipo){
     return 0;
 }
 
-template <typename Objeto, typename Arquivo>
-void registra(const Objeto& objeto, Arquivo nome){
-    existe<string>(nome);
-    ofstream out (nome.c_str(), ios::app);
-    out << objeto;
-    out.flush();
-    out.close();
+template <typename Arquivo>
+void limpa(Arquivo nome){
+    remove(nome.c_str());
+    ofstream recria (nome.c_str(), ios::app);
+    recria.close();
 }
 
 template <typename Objeto, typename Arquivo>
-void printFile(Arquivo nome){
+int remove(Objeto& objeto, Arquivo nome){
+    existe<string>(nome);
+    vector<Objeto> objetos;
+    typename vector<Objeto>::iterator it;
+    if (typeid(objeto).name() == typeid(Usuario).name() ){
+        setObjeto<Usuario, string>(nome, objetos);
+    }
+    for (it = objetos.begin(); it != objetos.end(); ++it){
+        if (typeid(objeto).name() == typeid(Usuario).name() ){
+            if (it->getUsuario() == objeto.getUsuario()){
+                objetos.erase(it);
+                objetos.pop_back();
+                limpa<string>(nome);
+                for (Objeto x : objetos){
+                    registra<Usuario, string>(x, nome);
+                }
+                return 1;
+            }        
+        }
+    }
+    return 0;
+}
+
+
+template <typename Objeto, typename Arquivo>
+void printObject(Arquivo nome){
     existe<string>(nome);
     if (typeid(Objeto).name() == typeid(Usuario).name() ){
         cout << endl;

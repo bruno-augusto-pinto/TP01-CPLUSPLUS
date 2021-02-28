@@ -170,16 +170,21 @@
                 break;
 
                 case 2:
-                    printFile<Usuario, string>(arquivo);
-                    //https://stackoverflow.com/questions/6755250/format-output-in-a-table-c
+                    printObject<Usuario, string>(arquivo);
                 break;
 
                 case 3:
-
+                    if (altremove<Usuario, string, string>(arquivo, "USUARIO", "NOME", "ALTERAR")){
+                        cadastro(true, arquivo);
+                    }
                 break;
 
                 case 4:
-
+                    if (!altremove<Usuario, string, string>(arquivo, "USUARIO", "NOME", "REMOVER")){
+                        cout << endl << "ERRO! USUARIO NÃO EXISTE!" << endl;
+                    }else{
+                        cout << endl << "USUARIO REMOVIDO!" << endl;
+                    }
                 break;
 
                 case 0:
