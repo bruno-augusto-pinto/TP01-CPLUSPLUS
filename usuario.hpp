@@ -5,7 +5,8 @@
 #include <stdlib.h>
 
 using namespace std; 
-
+//TRANSFORMAR EM CHAR, CALCULAR TAMANHO DE LINHA
+//www.decom.ufop.br/guillermo 
 class Usuario{
     private:
         string usuario;

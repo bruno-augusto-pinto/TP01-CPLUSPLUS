@@ -1,6 +1,3 @@
-//https://www.cplusplus.com/reference/fstream/fstream/
-//https://docs.microsoft.com/pt-br/cpp/standard-library/filesystem?view=msvc-160
-
 #ifndef arquivos_hpp
 #define arquivos_hpp
 
@@ -10,10 +7,6 @@
 #include <iterator>
 
 #include "usuario.hpp"
-
-using namespace std;
- 
-using namespace std::experimental::filesystem::v1;
 
 namespace fs = std::experimental::filesystem::v1;
 
@@ -27,7 +20,7 @@ void existe(Arquivo nome){
 }
 
 template <typename Objeto, typename Arquivo>
-void setObjeto(Arquivo nome, vector<Objeto>& objetos){
+void setObjetos(Arquivo nome, vector<Objeto>& objetos){
     ifstream in (nome.c_str());
     Objeto temporario;
     while(!in.eof()){
@@ -49,18 +42,16 @@ void registra(const Objeto& objeto, Arquivo nome){
 template <typename Objeto, typename Arquivo, typename Operacao>
 int verifica(Objeto& objeto, Arquivo nome, Operacao tipo){
     existe<string>(nome);
-    vector<Objeto> objetos;
     if (typeid(objeto).name() == typeid(Usuario).name() ){
-        setObjeto<Usuario, string>(nome, objetos);
-    }
-    for (Objeto x : objetos){
-        if (typeid(objeto).name() == typeid(Usuario).name() ){
+        vector<Objeto> objetos;
+        setObjetos<Usuario, string>(nome, objetos);
+        for (Objeto x : objetos){
             switch (tipo)
             {
-                case 'L':
+               case 'L': 
                     if (x.getUsuario() == objeto.getUsuario() && x.getSenha() == objeto.getSenha()){
                         objeto = x;
-                        return 1;
+                    return 1;
                     }
                 break;
 
@@ -69,7 +60,7 @@ int verifica(Objeto& objeto, Arquivo nome, Operacao tipo){
                         return 1;
                     }
                 break;
-            }
+            }  
         }
     }
     return 0;
@@ -85,13 +76,11 @@ void limpa(Arquivo nome){
 template <typename Objeto, typename Arquivo>
 int remove(Objeto& objeto, Arquivo nome){
     existe<string>(nome);
-    vector<Objeto> objetos;
-    typename vector<Objeto>::iterator it;
     if (typeid(objeto).name() == typeid(Usuario).name() ){
-        setObjeto<Usuario, string>(nome, objetos);
-    }
-    for (it = objetos.begin(); it != objetos.end(); ++it){
-        if (typeid(objeto).name() == typeid(Usuario).name() ){
+        vector<Objeto> objetos;
+        typename vector<Objeto>::iterator it;
+        setObjetos<Usuario, string>(nome, objetos);
+        for (it = objetos.begin(); it != objetos.end(); ++it){
             if (it->getUsuario() == objeto.getUsuario()){
                 objetos.erase(it);
                 objetos.pop_back();

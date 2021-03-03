@@ -2,33 +2,25 @@
 
 Funcionario::Funcionario(){}
 
-Funcionario::Funcionario(const string& nome, const char cpf[10]):nome(nome), CPF((char*)cpf){}
+Funcionario::Funcionario(Pessoa pessoa, const char tipo):pessoa(pessoa), tipo(tipo){}
 
 Funcionario::~Funcionario(){}
 
-void Funcionario::setNome(const string& nome){
-  this->nome = nome;
+void Funcionario::setTipo(const char& tipo){
+  this->tipo = tipo;
 }
 
-void Funcionario::setCPF(const char CPF[10]){
-  this->CPF = (char*)CPF;
-}
-
-string Funcionario::getNome(){
-  return this->nome;
-}
-
-char* Funcionario::getCPF(){
-  return this->CPF;
+char Funcionario::getTipo(){
+  return this->tipo;
 }
 
 ostream& operator <<(ostream& out, const Funcionario& funcionario){
-  out << funcionario.nome << "\n" << funcionario.CPF << endl;
+  out << funcionario.pessoa << funcionario.tipo << endl;
   return out;
 }
 
 istream& operator >>(istream& in, Funcionario& funcionario){
-  in >> funcionario.nome; 
-  in >> funcionario.CPF; 
+  in >> funcionario.pessoa;
+  in >> funcionario.tipo;
   return in;
 }

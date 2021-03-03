@@ -1,30 +1,25 @@
 #ifndef funcionario_hpp
 #define funcionario_hpp
 
-#include <iostream>
-#include <stdlib.h>
+#include "pessoa.hpp"
 
 using namespace std; 
 
-class Funcionario{
+class Funcionario: public Pessoa{
     private:
-        string nome;
-        char* CPF = new char(10);
+        Pessoa pessoa;
+        char tipo;
 
     public:
         Funcionario();
 
-        Funcionario(const string&, const char[10]);
+        Funcionario(Pessoa, const char);
 
         virtual ~Funcionario();
 
-        void setNome(const string&);
+        void setTipo(const char&);
 
-        void setCPF(const char*);
-
-        string getNome();
-
-        char* getCPF();
+        char getTipo();
 
         friend ostream& operator<<(ostream&, const Funcionario&);
 
