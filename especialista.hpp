@@ -2,25 +2,26 @@
 #define especialista_hpp
 
 #include "funcionario.hpp"
-#include "agenda.hpp"
+//#include "agenda.hpp"
+#include "assistente.hpp"
 
 using namespace std; 
 
 class Especialista: public Funcionario{
     private:
         Funcionario funcionario;
+        //Agenda agenda;
         
-
     public:
         Especialista();
 
-        Especialista(Funcionario, const char);
+        explicit Especialista(const Funcionario&);
 
         virtual ~Especialista();
 
-        void setTipo(const char&);
+        //void setAgenda(const Agenda&);
 
-        char getTipo();
+        //Agenda getAgenda();
 
         friend ostream& operator<<(ostream&, const Especialista&);
 

@@ -1,3 +1,5 @@
+//https://www.cplusplus.com/reference/ctime/tm/
+
 #include "calendario.hpp"
 
 Calendario::Calendario(){}
@@ -64,8 +66,13 @@ void Calendario::imprimeCalendario(int ano){
   }
 }
 
-/*
-ostream& operator<<(ostream&, const Calendario&){}
-
-istream& operator>>(istream&, Calendario&){}
-*/
+int comparaHora(int dia, int mes, int ano){
+  time_t hoje;
+  struct tm * hojeinfo;
+  time (&hoje);
+  hojeinfo = localtime (&hoje);
+  if ( (1900 + hojeinfo->tm_year) > ano || hojeinfo->tm_mon > mes || hojeinfo->tm_mday > dia){
+    return 0;
+  }
+  return 1;
+}

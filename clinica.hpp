@@ -23,17 +23,17 @@ class Clinica {
 
         void cadastro(bool, const string&);
 
-        void menuAdministrador();
+        void menuAdministrador(const Usuario& usuario);
 
         void crudUsuario();
 
         void crudFuncionario();
 
-        void menuAssistenteAdministrativo();
+        void menuAssistenteAdministrativo(const Usuario& usuario);
 
-        void menuUsuarioGeral();
+        void menuUsuarioGeral(const Usuario& usuario);
 
-        void menuAgenda();
+        void menuAgenda(const Usuario& usuario);
 
         void opcoesdaConta();
 

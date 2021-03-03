@@ -2,7 +2,7 @@
 
 Funcionario::Funcionario(){}
 
-Funcionario::Funcionario(Pessoa pessoa, const char tipo):pessoa(pessoa), tipo(tipo){}
+Funcionario::Funcionario(const Pessoa& pessoa, const char tipo):pessoa(pessoa), tipo(tipo){}
 
 Funcionario::~Funcionario(){}
 

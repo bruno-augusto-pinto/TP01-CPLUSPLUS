@@ -13,7 +13,7 @@ class Funcionario: public Pessoa{
     public:
         Funcionario();
 
-        Funcionario(Pessoa, const char);
+        explicit Funcionario(const Pessoa& pessoa, const char);
 
         virtual ~Funcionario();
 

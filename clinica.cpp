@@ -32,8 +32,13 @@
 
                 case 3:
                 {
-                    Calendario calendario;
-                    calendario.imprimeCalendario(2020);
+                    if ( !comparaHora(3, 2, 2021) ){
+                        perror("ERRO! VOCÊ NÃO PODE AGENDAR CONSULTA DE UM DIA QUE JÁ PASSOU!");
+                    }else{
+                        cout << endl << "DATA VALIDA";
+                    }
+                    //Calendario calendario;
+                    //calendario.imprimeCalendario(2020);
                 }
                 break;
 
@@ -63,15 +68,15 @@
 
         switch (user.getTipo()) {
             case 'A':
-                this->menuAdministrador();
+                this->menuAdministrador(user);
             break;
 
             case 'B':
-                this->menuAssistenteAdministrativo();
+                this->menuAssistenteAdministrativo(user);
             break;
 
             case 'G':
-                this->menuUsuarioGeral();
+                this->menuUsuarioGeral(user);
             break;
             
             case 'E':
@@ -129,7 +134,7 @@
         }
     }
 
-    void Clinica::menuAdministrador()
+    void Clinica::menuAdministrador(const Usuario& usuario)
     {
         int opc = -1;
         cout << endl << "MENU DO ADMINISTRADOR";
@@ -243,7 +248,7 @@
         }while(opc != 0);        
     }
 
-    void Clinica::menuAssistenteAdministrativo()
+    void Clinica::menuAssistenteAdministrativo(const Usuario& usuario)
     {
         int opc = -1;
         cout << endl << "MENU DO ASSISTENTE ADMINISTRADOR" << endl;
@@ -273,18 +278,18 @@
         EXIT_SUCCESS;
     }
 
-    void Clinica::menuUsuarioGeral()
+    void Clinica::menuUsuarioGeral(const Usuario& usuario)
     {
         int opc = -1;
         cout << endl << "MENU DO USUARIO GERAL" << endl;
         do {
-            cout << "(1) ACESSAR AGENDA" << endl << "(2) OPÇÕES DA CONTA"<< endl; 
+            cout << "(1) ACESSAR AGENDA DE CONSULTAS" << endl << "(2) OPÇÕES DA CONTA"<< endl; 
             cout << "(0) FINALIZAR EXECUÇÃO" << endl << "ESCOLHA: ";
             cin >> opc;
             switch (opc)
             {
                 case 1:
-                    this->menuAgenda();  
+                    this->menuAgenda(usuario);  
                 break;
 
                 case 2:
@@ -303,8 +308,38 @@
         EXIT_SUCCESS;
     }
 
-    void Clinica::menuAgenda(){
+    void Clinica::menuAgenda(const Usuario& usuario){
+        cout << endl << "MENU DE AGENDA DE CONSULTAS.";
+        cout << endl << "(1) AGENDAR UMA CONSULTA";
+        cout << endl << "(2) LISTAR AGENDA DE CONSULTAS";
+        cout << endl << "(3) DESMARCAR UMA CONSULTA";
+        cout << endl << "(4) HISTORICO DE CONSULTAS";
+        cout << endl << "ESCOLHA: ";
+        int opc = -1;
+        do {
+            cin >> opc;
+            switch (opc) 
+            {
+                case 1:
 
+                break;
+
+                case 2:
+
+                break;
+
+                case 3:
+
+                break;
+
+                case 4:
+
+                break;
+
+                default:
+                    cout << endl << "OPÇÃO INVALIDA! TENTE NOVAMENTE." << endl;
+            }
+        }while(opc != 0);
     }
 
     void Clinica::opcoesdaConta(){

@@ -4,40 +4,37 @@
 #include <iostream>
 #include <stdlib.h>
 
-#include "usuario.hpp"
+#include "data.hpp"
 
 using namespace std; 
 
 class Agenda{
     private:
+      Data data;
       string horario[5];
       int codigo[5];
       bool disponibilidade[5];
-      //Paciente paciente[5];
-      //String paciente[5];
-      Usuario usuario[5];
-      //Funcionario funcionario;
-      //Funcionario funcionario;
+      string paciente[5];
+      string funcionario;
 
     public:
-
-        Agenda();
+        Agenda(const int&, const int&, const int&);
 
         ~Agenda();
 
+        void setData(const Data&);
+
         void setDisponibilidade(const bool&, const int&);
 
-        void setUsuario(const Usuario&, const int&);
+        void setPaciente(const string&, const int&);
 
-        //void setPaciente(const Paciente&);
-
-        //void setPaciente(const String&);
+        void setFuncionario(const string&);
 
         bool getDisponibilidade(const int&);
 
-        //friend ostream& operator<<(ostream&, const Agenda&);
+        friend ostream& operator <<(ostream&, const Agenda&);
 
-        //friend istream& operator>>(istream&, Agenda&);
+        friend istream& operator >>(istream&, Agenda&);
 };
 
 #endif

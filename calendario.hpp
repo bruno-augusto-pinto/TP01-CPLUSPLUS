@@ -5,8 +5,11 @@
 #include <stdlib.h>
 #include <vector>
 #include <bits/stdc++.h>
+#include <chrono>
 
 using namespace std; 
+
+using namespace std::chrono;
 
 class Calendario{
     private:
@@ -44,10 +47,8 @@ class Calendario{
         int numerodeDias(int, int);
 
         void imprimeCalendario(int);
-
-        friend ostream& operator<<(ostream&, const Calendario&);
-
-        friend istream& operator>>(istream&, Calendario&);
 };
+
+int comparaHora(int, int, int);
 
 #endif
