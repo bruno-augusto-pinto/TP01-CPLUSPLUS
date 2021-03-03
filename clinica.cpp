@@ -18,7 +18,7 @@
         int opc = -1;
         do 
         {
-            cout << endl << "MENU PRINCIPAL: " << endl << "(1) LOGIN" << endl << "(2) REGISTRO" << endl << "(0) FINALIZAR" << endl << "ESCOLHA: ";
+            cout << endl << "MENU PRINCIPAL: " << endl << "(1) LOGIN" << endl << "(2) REGISTRO" << endl << "(3) EXPERIMENTAL CALENDARIO" << endl << "(0) FINALIZAR" << endl << "ESCOLHA: ";
             cin >> opc;
             switch (opc)
             {
@@ -28,6 +28,13 @@
 
                 case 2:
                     this->cadastro(false, "usuarios.bin"); 
+                break;
+
+                case 3:
+                {
+                    Calendario calendario;
+                    calendario.imprimeCalendario(2020);
+                }
                 break;
 
                 case 0:

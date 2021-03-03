@@ -2,6 +2,7 @@
 #define clinica_hpp
 
 #include "arquivos.hpp"
+#include "calendario.hpp"
 
 using namespace std;
 
