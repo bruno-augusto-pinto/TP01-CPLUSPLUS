@@ -13,9 +13,17 @@ class Funcionario: public Pessoa{
     public:
         Funcionario();
 
-        explicit Funcionario(const Pessoa& pessoa, const char);
+        Funcionario(const char*, const char*, const char);
 
         virtual ~Funcionario();
+
+        void setNome(const char*);
+
+        void setCPF(const char*);
+
+        string getNome();
+
+        char* getCPF();
 
         void setTipo(const char&);
 

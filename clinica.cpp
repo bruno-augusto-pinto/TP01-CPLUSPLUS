@@ -62,7 +62,7 @@
         cout << endl << "INSIRA A SENHA: ";
         cin >> senha;
         Usuario user(usuario, senha, '0');
-        if (!verifica<Usuario, string, char>(user, arquivo, 'L')){
+        if (!verifica<Usuario>(user, arquivo, 'L')){
             cout << endl << "USUARIO OU SENHA INVALIDOS!" << endl;
         }
 
@@ -126,10 +126,10 @@
             tipo = 'G';
         }
         Usuario user(usuario, senha, tipo);
-        if (verifica<Usuario, string, char>(user, arquivo, 'C')){
+        if (verifica<Usuario>(user, arquivo, 'C')){
            cout << endl << "USUARIO JA CADASTRADO!" << endl;
         }else{
-            registra<Usuario, string>(user, arquivo);
+            registra<Usuario>(user, arquivo);
             cout << endl << "USUARIO CADASTRADO COM SUCESSO!" << endl;
         }
     }
@@ -182,17 +182,17 @@
                 break;
 
                 case 2:
-                    printObject<Usuario, string>(arquivo);
+                    printObject<Usuario>(arquivo);
                 break;
 
                 case 3:
-                    if (altremove<Usuario, string, string>(arquivo, "USUARIO", "NOME", "ALTERAR")){
+                    if (altremove<Usuario>(arquivo, "USUARIO", "NOME", "ALTERAR")){
                         cadastro(true, arquivo);
                     }
                 break;
 
                 case 4:
-                    if (!altremove<Usuario, string, string>(arquivo, "USUARIO", "NOME", "REMOVER")){
+                    if (!altremove<Usuario>(arquivo, "USUARIO", "NOME", "REMOVER")){
                         cout << endl << "ERRO! USUARIO NÃO EXISTE!" << endl;
                     }else{
                         cout << endl << "USUARIO REMOVIDO!" << endl;
@@ -215,14 +215,14 @@
         int opc = -1;
         cout << endl <<"MENU ADMINISTRATIVO DE FUNCIONARIOS";
         do {
-            cout << endl << "(1) CADASTRAR UM NOVO FUNCIONARIO" << endl << "(2) LISTAR FUNCIONARIOS";
+            cout << endl << "(1) REGISTRAR UM NOVO FUNCIONARIO" << endl << "(2) LISTAR FUNCIONARIOS";
             cout << endl << "(3) ALTERAR DADOS DE UM FUNCIONARIO" << endl << "(4) REMOVER UM FUNCIONARIO";
             cout << endl << "(0) SAIR DO MENU" << endl << "ESCOLHA: ";
             cin >> opc;
             switch (opc)
             {
                 case 1:
-
+                    this->registraFuncionario();
                 break;
 
                 case 2:
@@ -246,6 +246,57 @@
                 break;
             }
         }while(opc != 0);        
+    }
+
+    void Clinica::registraFuncionario(){
+        string arquivo = "funcionarios.bin";
+        char* nome = new char(12);
+        char* cpf = new char(10);
+        int opc = -1;
+        char tipo;
+        cout << endl << "INSIRA O NOME: ";
+        cin >> nome;
+        cout << endl << "INSIRA O CPF: ";
+        cin >> cpf;
+        do {
+            cout << endl << "(1) ESPECIALISTA";
+            cout << endl << "(2) ASSISTENTE";
+            cout << endl << "(3) RECEPCIONISTA";
+            cout << endl << "ESCOLHA: ";
+            cin >> opc;
+            switch (opc)
+            {
+                case 1:
+                    tipo = 'E';
+                    opc = 0;
+                break;
+
+                case 2:
+                    tipo = 'A';
+                    opc = 0;
+                break;
+
+                case 3:
+                    tipo = 'R';
+                    opc = 0;
+                break;
+                
+                default:
+                    cout << endl << "INVALIDO! TENTE NOVAMENTE!";
+                break;
+            }
+        }while(opc != 0);
+        Funcionario funcionario(nome, cpf, tipo);
+        funcionario.setNome(nome);
+        funcionario.setCPF(cpf);
+        if (!verifica<Funcionario>(funcionario, arquivo)){
+           cout << endl << "FUNCIONARIO JA CADASTRADO!" << endl;
+        }else{
+            registra<Funcionario>(funcionario, arquivo);
+            cout << endl << "FUNCIONARIO CADASTRADO COM SUCESSO!" << endl;
+        }
+        delete(nome);
+        delete(cpf);
     }
 
     void Clinica::menuAssistenteAdministrativo(const Usuario& usuario)
@@ -359,6 +410,12 @@
         }
 
         if(!fs::exists("funcionarios.bin"))
+        {
+            fstream criar ("funcionarios.bin", ios::app | ios::binary);
+            criar.close();
+        }
+
+        if(!fs::exists("agenda.bin"))
         {
             fstream criar ("funcionarios.bin", ios::app | ios::binary);
             criar.close();

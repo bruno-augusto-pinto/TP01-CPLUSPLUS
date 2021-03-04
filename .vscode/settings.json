@@ -1,6 +1,10 @@
 
 {
     "files.associations": {
+        ".sequelizerc": "javascript",
+        ".stylelintrc": "json",
+        ".prettierrc": "json",
+        "*.tsx": "typescriptreact",
         "ostream": "cpp",
         "iostream": "cpp",
         "array": "cpp",
@@ -54,6 +58,7 @@
         "cstring": "cpp",
         "compare": "cpp",
         "concepts": "cpp",
-        "ranges": "cpp"
+        "ranges": "cpp",
+        "typeindex": "cpp"
     }
 }

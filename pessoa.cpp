@@ -23,7 +23,7 @@ char* Pessoa::getCPF(){
 }
 
 ostream& operator <<(ostream& out, const Pessoa& pessoa){
-  out << pessoa.nome << "\n" << pessoa.CPF << endl;
+  out << pessoa.nome << "\n" << pessoa.CPF;
   return out;
 }
 

@@ -5,13 +5,14 @@
 #include <vector>
 #include <experimental/filesystem> 
 #include <iterator>
+#include <string.h>
 
 #include "usuario.hpp"
+#include "especialista.hpp"
 
 namespace fs = std::experimental::filesystem::v1;
 
-template <typename Arquivo>
-void existe(Arquivo nome){
+void existe(string nome){
     if(!fs::exists(nome.c_str()))
     {
         perror("ERRO: ARQUIVO NAO EXISTE!");
@@ -19,8 +20,8 @@ void existe(Arquivo nome){
     }  
 }
 
-template <typename Objeto, typename Arquivo>
-void setObjetos(Arquivo nome, vector<Objeto>& objetos){
+template <typename Objeto>
+void setObjetos(string nome, vector<Objeto>& objetos){
     ifstream in (nome.c_str());
     Objeto temporario;
     while(!in.eof()){
@@ -30,22 +31,22 @@ void setObjetos(Arquivo nome, vector<Objeto>& objetos){
     in.close();
 }
 
-template <typename Objeto, typename Arquivo>
-void registra(const Objeto& objeto, Arquivo nome){
-    existe<string>(nome);
+template <typename Objeto>
+void registra(const Objeto& objeto, string nome){
+    existe(nome);
     ofstream out (nome.c_str(), ios::app);
     out << objeto;
     out.flush();
     out.close();
 }
 
-template <typename Objeto, typename Arquivo, typename Operacao>
-int verifica(Objeto& objeto, Arquivo nome, Operacao tipo){
-    existe<string>(nome);
+template <typename Objeto>
+int verifica(Objeto& objeto, string nome, char tipo){
+    existe(nome);
+    vector<Objeto> objetos;
     if (typeid(objeto).name() == typeid(Usuario).name() ){
-        vector<Objeto> objetos;
-        setObjetos<Usuario, string>(nome, objetos);
-        for (Objeto x : objetos){
+        setObjetos<Usuario>(nome, objetos);
+        for (Usuario x : objetos){
             switch (tipo)
             {
                case 'L': 
@@ -66,27 +67,41 @@ int verifica(Objeto& objeto, Arquivo nome, Operacao tipo){
     return 0;
 }
 
-template <typename Arquivo>
-void limpa(Arquivo nome){
+template <typename Objeto>
+int verifica(Objeto objeto, const string& nome){
+    existe(nome);
+    vector<Objeto> objetos;
+    if (typeid(objeto).name() == typeid(Funcionario).name() ){
+        setObjetos<Funcionario>(nome, objetos);
+        for (Objeto x : objetos){
+            if (strcmp(x.getCPF(), objeto.getCPF()) == 0){
+                return 0;
+            }
+        }
+    }
+    return 1;
+}
+
+void limpa(string nome){
     remove(nome.c_str());
     ofstream recria (nome.c_str(), ios::app);
     recria.close();
 }
 
-template <typename Objeto, typename Arquivo>
-int remove(Objeto& objeto, Arquivo nome){
-    existe<string>(nome);
+template <typename Objeto>
+int remove(Objeto& objeto, string nome){
+    existe(nome);
     if (typeid(objeto).name() == typeid(Usuario).name() ){
         vector<Objeto> objetos;
         typename vector<Objeto>::iterator it;
-        setObjetos<Usuario, string>(nome, objetos);
+        setObjetos<Usuario>(nome, objetos);
         for (it = objetos.begin(); it != objetos.end(); ++it){
             if (it->getUsuario() == objeto.getUsuario()){
                 objetos.erase(it);
                 objetos.pop_back();
-                limpa<string>(nome);
+                limpa(nome);
                 for (Objeto x : objetos){
-                    registra<Usuario, string>(x, nome);
+                    registra<Usuario>(x, nome);
                 }
                 return 1;
             }        
@@ -96,9 +111,9 @@ int remove(Objeto& objeto, Arquivo nome){
 }
 
 
-template <typename Objeto, typename Arquivo>
-void printObject(Arquivo nome){
-    existe<string>(nome);
+template <typename Objeto>
+void printObject(string nome){
+    existe(nome);
     if (typeid(Objeto).name() == typeid(Usuario).name() ){
         cout << endl;
         printf("|%5s|%14s|", "NOME ", "TIPO DE CONTA ");
