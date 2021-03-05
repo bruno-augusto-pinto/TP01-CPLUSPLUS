@@ -22,8 +22,20 @@ char* Pessoa::getCPF(){
   return this->CPF;
 }
 
+void Pessoa::setChave(char* chave){
+  this->chave.setChave( chave );
+}
+
+void Pessoa::setChave(){
+  this->chave.setChave(CPF);
+}
+
+char* Pessoa::getChave(){
+  return this->chave.getChave();
+}
+
 ostream& operator <<(ostream& out, const Pessoa& pessoa){
-  out << pessoa.nome << "\n" << pessoa.CPF;
+  out << pessoa.chave << pessoa.nome << "\n" << pessoa.CPF;
   return out;
 }
 

@@ -37,8 +37,8 @@
                     }else{
                         cout << endl << "DATA VALIDA";
                     }
-                    //Calendario calendario;
-                    //calendario.imprimeCalendario(2020);
+                    Calendario calendario;
+                    calendario.imprimeCalendario(2020);
                 }
                 break;
 
@@ -56,42 +56,44 @@
 
     void Clinica::login(const string& arquivo)
     {
-        string usuario, senha;
+        char* usuario = new char[12];
+        char* senha = new char[12];
         cout << endl << "INSIRA O USUARIO: ";
         cin >> usuario;
         cout << endl << "INSIRA A SENHA: ";
         cin >> senha;
         Usuario user(usuario, senha, '0');
-        if (!verifica<Usuario>(user, arquivo, 'L')){
+        user.setChave();
+        if (!verifica<Usuario, vector<Usuario>>(user, arquivo)){
             cout << endl << "USUARIO OU SENHA INVALIDOS!" << endl;
-        }
+        }else{
+            Usuario temp = getObjeto<Usuario>(user, arquivo);
+            if (strcmp(temp.getSenha(), user.getSenha()) == 0){
+                user = temp;
+                temp.~Usuario();
+                switch (user.getTipo()) {
+                    case 'A':
+                        this->menuAdministrador(user);
+                    break;
 
-        switch (user.getTipo()) {
-            case 'A':
-                this->menuAdministrador(user);
-            break;
+                    case 'B':
+                        this->menuAssistenteAdministrativo(user);
+                    break;
 
-            case 'B':
-                this->menuAssistenteAdministrativo(user);
-            break;
-
-            case 'G':
-                this->menuUsuarioGeral(user);
-            break;
-            
-            case 'E':
-                EXIT_FAILURE;
-            break;
-
-            case 'O':
+                    case 'G':
+                        this->menuUsuarioGeral(user);
+                    break;
+                }
+            }else{
                 cout << endl << "USUARIO OU SENHA INVALIDOS!" << endl;
-            break;
+            }
         }
     }
 
     void Clinica::cadastro(bool admin, const string& arquivo)
     {
-        string usuario, senha;
+        char* usuario = new char[12];
+        char* senha = new char[12];
         char tipo;
         cout << endl << "INSIRA O USUARIO: ";
         cin >> usuario;
@@ -126,8 +128,9 @@
             tipo = 'G';
         }
         Usuario user(usuario, senha, tipo);
-        if (verifica<Usuario>(user, arquivo, 'C')){
-           cout << endl << "USUARIO JA CADASTRADO!" << endl;
+        user.setChave();
+        if (verifica<Usuario, vector<Usuario>>(user, arquivo)){
+            cout << endl << "USUARIO JA CADASTRADO!" << endl;
         }else{
             registra<Usuario>(user, arquivo);
             cout << endl << "USUARIO CADASTRADO COM SUCESSO!" << endl;
@@ -182,7 +185,7 @@
                 break;
 
                 case 2:
-                    printObject<Usuario>(arquivo);
+                    imprimeUsuarios(arquivo);
                 break;
 
                 case 3:
@@ -212,6 +215,7 @@
 
     void Clinica::crudFuncionario()
     {
+        string arquivo = "funcionarios.bin";
         int opc = -1;
         cout << endl <<"MENU ADMINISTRATIVO DE FUNCIONARIOS";
         do {
@@ -222,11 +226,11 @@
             switch (opc)
             {
                 case 1:
-                    this->registraFuncionario();
+                    this->registraFuncionario(arquivo);
                 break;
 
                 case 2:
-
+                    //printObject<Funcionario>(arquivo);
                 break;
 
                 case 3:
@@ -248,8 +252,7 @@
         }while(opc != 0);        
     }
 
-    void Clinica::registraFuncionario(){
-        string arquivo = "funcionarios.bin";
+    void Clinica::registraFuncionario(const string& arquivo){
         char* nome = new char(12);
         char* cpf = new char(10);
         int opc = -1;
@@ -258,6 +261,7 @@
         cin >> nome;
         cout << endl << "INSIRA O CPF: ";
         cin >> cpf;
+        Funcionario funcionario;
         do {
             cout << endl << "(1) ESPECIALISTA";
             cout << endl << "(2) ASSISTENTE";
@@ -267,6 +271,7 @@
             switch (opc)
             {
                 case 1:
+                    //funcionario = new Especialista;
                     tipo = 'E';
                     opc = 0;
                 break;
@@ -286,17 +291,16 @@
                 break;
             }
         }while(opc != 0);
-        Funcionario funcionario(nome, cpf, tipo);
         funcionario.setNome(nome);
         funcionario.setCPF(cpf);
-        if (!verifica<Funcionario>(funcionario, arquivo)){
+        funcionario.setTipo(tipo);
+        funcionario.setChave();
+        if (verifica<Funcionario, vector<Funcionario>>(funcionario, arquivo)){
            cout << endl << "FUNCIONARIO JA CADASTRADO!" << endl;
         }else{
             registra<Funcionario>(funcionario, arquivo);
             cout << endl << "FUNCIONARIO CADASTRADO COM SUCESSO!" << endl;
         }
-        delete(nome);
-        delete(cpf);
     }
 
     void Clinica::menuAssistenteAdministrativo(const Usuario& usuario)
@@ -401,12 +405,10 @@
         if(!fs::exists("usuarios.bin"))
         {
             Usuario admin("admin", "admin", 'A');
+            admin.setChave();
             fstream criar ("usuarios.bin", ios::app | ios::binary);
             criar.close();
-            ofstream out("usuarios.bin");
-            out << admin;
-            out.flush();
-            out.close();
+            registra<Usuario>(admin, (string)"usuarios.bin");
         }
 
         if(!fs::exists("funcionarios.bin"))
@@ -417,7 +419,7 @@
 
         if(!fs::exists("agenda.bin"))
         {
-            fstream criar ("funcionarios.bin", ios::app | ios::binary);
+            fstream criar ("agenda.bin", ios::app | ios::binary);
             criar.close();
         }
     }

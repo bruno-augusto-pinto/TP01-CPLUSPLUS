@@ -29,6 +29,12 @@ class Funcionario: public Pessoa{
 
         char getTipo();
 
+        void setChave(char*);
+
+        void setChave();
+
+        char* getChave();
+
         friend ostream& operator<<(ostream&, const Funcionario&);
 
         friend istream& operator>>(istream&, Funcionario&);

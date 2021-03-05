@@ -2,26 +2,39 @@
 #define especialista_hpp
 
 #include "funcionario.hpp"
-//#include "agenda.hpp"
 #include "assistente.hpp"
+#include "agenda.hpp"
 
 using namespace std; 
 
 class Especialista: public Funcionario{
     private:
         Funcionario funcionario;
-        //Agenda agenda;
+        Agenda agenda;
+        //Chave CDOMD; Código Deontológico da OMD
         
     public:
         Especialista();
 
-        explicit Especialista(const Funcionario&);
+        Especialista(const char*, const char*, const char);
 
         virtual ~Especialista();
 
-        //void setAgenda(const Agenda&);
+        void setNome(const char*);
 
-        //Agenda getAgenda();
+        void setCPF(const char*);
+
+        string getNome();
+
+        char* getCPF();
+
+        void setTipo(const char&);
+
+        char getTipo();
+
+        void setAgenda(const Agenda&);
+
+        Agenda getAgenda();
 
         friend ostream& operator<<(ostream&, const Especialista&);
 

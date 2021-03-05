@@ -12,137 +12,83 @@
 
 namespace fs = std::experimental::filesystem::v1;
 
-void existe(string nome){
-    if(!fs::exists(nome.c_str()))
-    {
-        perror("ERRO: ARQUIVO NAO EXISTE!");
-        EXIT_FAILURE;
-    }  
-}
+void existe(const string&);
+void limpa(const string&);
 
-template <typename Objeto>
-void setObjetos(string nome, vector<Objeto>& objetos){
+void imprimeUsuarios(const string&);
+void imprimeFuncionarios(const string&, const bool&);
+
+
+template <typename Objeto, typename Container>
+void setObjetos(const string& nome, Container& objetos){
     ifstream in (nome.c_str());
     Objeto temporario;
-    while(!in.eof()){
-        in >> temporario;
+    while(in >> temporario){
+        //cout << "temporario: " << temporario << endl;
         objetos.push_back(temporario);
+        //cout << "Objetos.front():" << objetos.front() << endl;
+        //cout << "Objetos.back():" << objetos.back() << endl;
     }
     in.close();
+    //for (auto it : objetos) {
+        //cout << "Objeto it em set apos while: "<< endl << it;
+    //}
 }
 
 template <typename Objeto>
-void registra(const Objeto& objeto, string nome){
+void registra(const Objeto& objeto, const string& nome){
     existe(nome);
-    ofstream out (nome.c_str(), ios::app);
+    ofstream out (nome.c_str(), ios::app | ios::binary);
     out << objeto;
     out.flush();
     out.close();
 }
 
 template <typename Objeto>
-int verifica(Objeto& objeto, string nome, char tipo){
+Objeto getObjeto(Objeto objeto, const string& nome){
     existe(nome);
     vector<Objeto> objetos;
-    if (typeid(objeto).name() == typeid(Usuario).name() ){
-        setObjetos<Usuario>(nome, objetos);
-        for (Usuario x : objetos){
-            switch (tipo)
-            {
-               case 'L': 
-                    if (x.getUsuario() == objeto.getUsuario() && x.getSenha() == objeto.getSenha()){
-                        objeto = x;
-                    return 1;
-                    }
-                break;
+    setObjetos<Objeto, vector<Objeto>>(nome, objetos);
+    for (Objeto x : objetos){
+        if (strcmp(x.getChave(), objeto.getChave()) == 0){
+            return x;
+        }
+    }
+    return objeto;
+}
 
-                case 'C':
-                    if (x.getUsuario() == objeto.getUsuario()){
-                        return 1;
-                    }
-                break;
-            }  
+template <typename Objeto, typename Container>
+int verifica(Objeto objeto, const string& nome){
+    existe(nome);
+    Container objetos;
+    setObjetos<Objeto, Container>(nome, objetos);
+    for (auto it : objetos) {
+        cout << "Objeto it: "<< endl << it;
+        if (strcmp(it.getChave(), objeto.getChave()) == 0){
+            return 1;
         }
     }
     return 0;
 }
 
 template <typename Objeto>
-int verifica(Objeto objeto, const string& nome){
+int remove(Objeto objeto, const string& nome){
     existe(nome);
-    vector<Objeto> objetos;
-    if (typeid(objeto).name() == typeid(Funcionario).name() ){
-        setObjetos<Funcionario>(nome, objetos);
-        for (Objeto x : objetos){
-            if (strcmp(x.getCPF(), objeto.getCPF()) == 0){
-                return 0;
-            }
-        }
-    }
-    return 1;
-}
-
-void limpa(string nome){
-    remove(nome.c_str());
-    ofstream recria (nome.c_str(), ios::app);
-    recria.close();
-}
-
-template <typename Objeto>
-int remove(Objeto& objeto, string nome){
-    existe(nome);
-    if (typeid(objeto).name() == typeid(Usuario).name() ){
         vector<Objeto> objetos;
+        setObjetos<Objeto, vector<Objeto>>(nome, objetos);
         typename vector<Objeto>::iterator it;
-        setObjetos<Usuario>(nome, objetos);
         for (it = objetos.begin(); it != objetos.end(); ++it){
-            if (it->getUsuario() == objeto.getUsuario()){
+            if (it->getChave() == objeto.getChave()){
                 objetos.erase(it);
                 objetos.pop_back();
                 limpa(nome);
                 for (Objeto x : objetos){
-                    registra<Usuario>(x, nome);
+                    registra<Objeto>(x, nome);
                 }
                 return 1;
             }        
         }
-    }
     return 0;
-}
-
-
-template <typename Objeto>
-void printObject(string nome){
-    existe(nome);
-    if (typeid(Objeto).name() == typeid(Usuario).name() ){
-        cout << endl;
-        printf("|%5s|%14s|", "NOME ", "TIPO DE CONTA ");
-        cout << endl;
-    }
-    ifstream in (nome.c_str());
-    Objeto x;
-    while(in >> x){
-        if (typeid(Objeto).name() == typeid(Usuario).name() ){
-            string tipo;
-            switch (x.getTipo())
-            {
-                case 'A':
-                    tipo = "Administrador";
-                break;
-
-                case 'B':
-                    tipo = "Assistente";
-                break;
-
-                case 'G':
-                    tipo = "Geral";
-                break;
-            }
-            printf("|%5s|%14s|", x.getUsuario().c_str(), tipo.c_str());
-            cout << endl;
-        }
-    }
-    in.close();
 }
 
 #endif

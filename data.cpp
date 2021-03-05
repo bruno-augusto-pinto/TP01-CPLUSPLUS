@@ -1,5 +1,7 @@
 #include "data.hpp"
 
+Data::Data(){}
+
 Data::Data(const int& dia, const int& mes, const int& ano):dia(dia), mes(mes), ano(ano){}
 
 Data::~Data(){}

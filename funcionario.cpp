@@ -30,6 +30,19 @@ char Funcionario::getTipo(){
   return this->tipo;
 }
 
+void Funcionario::setChave(char* chave){
+  this->pessoa.setChave( chave );
+}
+
+void Funcionario::setChave(){
+  this->pessoa.setChave();
+}
+
+char* Funcionario::getChave(){
+  return this->pessoa.getChave();
+}
+
+
 ostream& operator <<(ostream& out, const Funcionario& funcionario){
   out << funcionario.pessoa << "\n" << funcionario.tipo << endl;
   return out;

@@ -29,7 +29,7 @@ class Clinica {
 
         void crudFuncionario();
 
-        void registraFuncionario();
+        void registraFuncionario(const string&);
 
         void menuAssistenteAdministrativo(const Usuario& usuario);
 
@@ -43,17 +43,15 @@ class Clinica {
 
         template <typename Objeto>
         int altremove(string arquivo, string tiponome, string tipochave, string operacao){
-            string chave;
-            cout << endl << "DIGITE O " << tipochave <<  " DO "  << tiponome << " QUE DESEJA " << operacao << ": ";
+            char* chave = new char;
+            cout << endl << "DIGITE O " << tipochave <<  " DO "  << tiponome << " QUE DESEJA " << operacao << ": ";           
             cin >> chave;
             Objeto objeto;
-            if (typeid(Objeto).name() == typeid(Usuario).name() ){
-                objeto.setUsuario(chave);
-                if (verifica<Usuario>(objeto, arquivo, 'C')){
-                    remove<Usuario>(objeto, arquivo);
-                    return 1;
-                }
-            }
+            objeto.setChave((char*)chave);
+            /*if (verifica<Objeto>(objeto, arquivo)){
+                remove<Objeto>(objeto, arquivo);
+                return 1;
+            }*/
             return 0;
         }
 };

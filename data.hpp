@@ -12,6 +12,8 @@ class Data{
         int ano;
 
     public:
+        Data();
+
         Data(const int&, const int&, const int&);
 
         ~Data();

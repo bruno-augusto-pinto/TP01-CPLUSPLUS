@@ -1,5 +1,17 @@
 #include "agenda.hpp"
 
+Agenda::Agenda(){
+  horario[0] = "08H-10H";
+  horario[1] = "10H-12H";
+  horario[2] = "13H-15H";
+  horario[3] = "15H-17H";
+  horario[4] = "17H-19H";
+  for (unsigned i = 0; i < 5; i++){
+    disponibilidade[i] = true;
+    codigo[i] = i;
+  }
+}
+
 Agenda::Agenda(const int& dia, const int& mes, const int& ano):data(dia, mes, ano)
 {
   horario[0] = "08H-10H";

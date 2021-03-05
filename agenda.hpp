@@ -18,6 +18,8 @@ class Agenda{
       string funcionario;
 
     public:
+        Agenda();
+
         Agenda(const int&, const int&, const int&);
 
         ~Agenda();

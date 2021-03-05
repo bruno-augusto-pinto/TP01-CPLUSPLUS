@@ -3,13 +3,15 @@
 
 #include <iostream>
 #include <stdlib.h>
+#include "chave.hpp"
 
 using namespace std; 
 
-class Pessoa{
+class Pessoa: public Chave{
     private:
         char* nome = new char(12);
         char* CPF = new char(10);
+        Chave chave;
 
     public:
         Pessoa();
@@ -25,6 +27,12 @@ class Pessoa{
         string getNome();
 
         char* getCPF();
+
+        void setChave(char*);
+
+        void setChave();
+
+        char* getChave();
 
         friend ostream& operator<<(ostream&, const Pessoa&);
 
