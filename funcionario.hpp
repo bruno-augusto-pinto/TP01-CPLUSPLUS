@@ -13,27 +13,27 @@ class Funcionario: public Pessoa{
     public:
         Funcionario();
 
-        Funcionario(const char*, const char*, const char);
+        Funcionario(const string&, const string&, const char);
 
         virtual ~Funcionario();
 
-        void setNome(const char*);
+        void setNome(const string&);
 
-        void setCPF(const char*);
-
-        string getNome();
-
-        char* getCPF();
+        void setCPF(const string&);
 
         void setTipo(const char&);
 
-        char getTipo();
-
-        void setChave(char*);
+        void setChave(const string&);
 
         void setChave();
+        
+        string getNome();
 
-        char* getChave();
+        string getCPF();
+
+        string getChave();
+        
+        char getTipo();
 
         friend ostream& operator<<(ostream&, const Funcionario&);
 

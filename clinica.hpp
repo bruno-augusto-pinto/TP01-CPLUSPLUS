@@ -43,15 +43,15 @@ class Clinica {
 
         template <typename Objeto>
         int altremove(string arquivo, string tiponome, string tipochave, string operacao){
-            char* chave = new char;
+            string chave;
             cout << endl << "DIGITE O " << tipochave <<  " DO "  << tiponome << " QUE DESEJA " << operacao << ": ";           
             cin >> chave;
             Objeto objeto;
-            objeto.setChave((char*)chave);
-            /*if (verifica<Objeto>(objeto, arquivo)){
-                remove<Objeto>(objeto, arquivo);
+            objeto.setChave(chave);
+            if (verifica<Objeto, vector<Objeto>>(objeto, arquivo)){
+                remove<Objeto,  vector<Objeto>>(objeto, arquivo);
                 return 1;
-            }*/
+            }
             return 0;
         }
 };

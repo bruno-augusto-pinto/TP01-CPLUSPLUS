@@ -56,8 +56,8 @@
 
     void Clinica::login(const string& arquivo)
     {
-        char* usuario = new char[12];
-        char* senha = new char[12];
+        string usuario;
+        string senha;
         cout << endl << "INSIRA O USUARIO: ";
         cin >> usuario;
         cout << endl << "INSIRA A SENHA: ";
@@ -67,8 +67,8 @@
         if (!verifica<Usuario, vector<Usuario>>(user, arquivo)){
             cout << endl << "USUARIO OU SENHA INVALIDOS!" << endl;
         }else{
-            Usuario temp = getObjeto<Usuario>(user, arquivo);
-            if (strcmp(temp.getSenha(), user.getSenha()) == 0){
+            Usuario temp = getObjeto<Usuario, vector<Usuario>>(user, arquivo);
+            if (temp.getSenha() == user.getSenha()){
                 user = temp;
                 temp.~Usuario();
                 switch (user.getTipo()) {
@@ -92,8 +92,8 @@
 
     void Clinica::cadastro(bool admin, const string& arquivo)
     {
-        char* usuario = new char[12];
-        char* senha = new char[12];
+        string usuario;
+        string senha;
         char tipo;
         cout << endl << "INSIRA O USUARIO: ";
         cin >> usuario;
@@ -230,7 +230,7 @@
                 break;
 
                 case 2:
-                    //printObject<Funcionario>(arquivo);
+                    imprimeFuncionarios(arquivo, true);
                 break;
 
                 case 3:
@@ -253,8 +253,8 @@
     }
 
     void Clinica::registraFuncionario(const string& arquivo){
-        char* nome = new char(12);
-        char* cpf = new char(10);
+        string nome;
+        string cpf;
         int opc = -1;
         char tipo;
         cout << endl << "INSIRA O NOME: ";

@@ -24,15 +24,9 @@ void setObjetos(const string& nome, Container& objetos){
     ifstream in (nome.c_str());
     Objeto temporario;
     while(in >> temporario){
-        //cout << "temporario: " << temporario << endl;
         objetos.push_back(temporario);
-        //cout << "Objetos.front():" << objetos.front() << endl;
-        //cout << "Objetos.back():" << objetos.back() << endl;
     }
     in.close();
-    //for (auto it : objetos) {
-        //cout << "Objeto it em set apos while: "<< endl << it;
-    //}
 }
 
 template <typename Objeto>
@@ -44,13 +38,13 @@ void registra(const Objeto& objeto, const string& nome){
     out.close();
 }
 
-template <typename Objeto>
+template <typename Objeto, typename Container>
 Objeto getObjeto(Objeto objeto, const string& nome){
     existe(nome);
-    vector<Objeto> objetos;
-    setObjetos<Objeto, vector<Objeto>>(nome, objetos);
+    Container objetos;
+    setObjetos<Objeto, Container>(nome, objetos);
     for (Objeto x : objetos){
-        if (strcmp(x.getChave(), objeto.getChave()) == 0){
+        if (x.getChave() == objeto.getChave()){
             return x;
         }
     }
@@ -63,20 +57,19 @@ int verifica(Objeto objeto, const string& nome){
     Container objetos;
     setObjetos<Objeto, Container>(nome, objetos);
     for (auto it : objetos) {
-        cout << "Objeto it: "<< endl << it;
-        if (strcmp(it.getChave(), objeto.getChave()) == 0){
+        if (it.getChave() == objeto.getChave()){
             return 1;
         }
     }
     return 0;
 }
 
-template <typename Objeto>
+template <typename Objeto, typename Container>
 int remove(Objeto objeto, const string& nome){
     existe(nome);
-        vector<Objeto> objetos;
-        setObjetos<Objeto, vector<Objeto>>(nome, objetos);
-        typename vector<Objeto>::iterator it;
+        Container objetos;
+        setObjetos<Objeto, Container>(nome, objetos);
+        typename Container::iterator it;
         for (it = objetos.begin(); it != objetos.end(); ++it){
             if (it->getChave() == objeto.getChave()){
                 objetos.erase(it);

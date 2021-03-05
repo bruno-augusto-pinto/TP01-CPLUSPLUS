@@ -2,15 +2,15 @@
 
 Funcionario::Funcionario(){}
 
-Funcionario::Funcionario(const char* nome, const char* cpf, const char tipo):Pessoa(nome, cpf), tipo(tipo){}
+Funcionario::Funcionario(const string& nome, const string& cpf, const char tipo):Pessoa(nome, cpf), tipo(tipo){}
 
 Funcionario::~Funcionario(){}
 
-void Funcionario::setNome(const char* nome){
+void Funcionario::setNome(const string& nome){
   this->pessoa.setNome(nome);
 }
 
-void Funcionario::setCPF(const char* cpf){
+void Funcionario::setCPF(const string& cpf){
   this->pessoa.setCPF(cpf);
 }
 
@@ -18,7 +18,7 @@ string Funcionario::getNome(){
   return this->pessoa.getNome();
 }
 
-char* Funcionario::getCPF(){
+string Funcionario::getCPF(){
   return this->pessoa.getCPF();
 }
 
@@ -30,7 +30,7 @@ char Funcionario::getTipo(){
   return this->tipo;
 }
 
-void Funcionario::setChave(char* chave){
+void Funcionario::setChave(const string& chave){
   this->pessoa.setChave( chave );
 }
 
@@ -38,7 +38,7 @@ void Funcionario::setChave(){
   this->pessoa.setChave();
 }
 
-char* Funcionario::getChave(){
+string Funcionario::getChave(){
   return this->pessoa.getChave();
 }
 

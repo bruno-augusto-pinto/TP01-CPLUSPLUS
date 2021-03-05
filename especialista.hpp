@@ -11,22 +11,22 @@ class Especialista: public Funcionario{
     private:
         Funcionario funcionario;
         Agenda agenda;
-        //Chave CDOMD; Código Deontológico da OMD
+        Chave CDOMD; //Código Deontológico da OMD
         
     public:
         Especialista();
 
-        Especialista(const char*, const char*, const char);
+        Especialista(const string&, const string&, const char);
 
         virtual ~Especialista();
 
-        void setNome(const char*);
+        void setNome(const string&);
 
-        void setCPF(const char*);
+        void setCPF(const string&);
 
         string getNome();
 
-        char* getCPF();
+        string getCPF();
 
         void setTipo(const char&);
 

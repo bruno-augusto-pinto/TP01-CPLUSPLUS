@@ -7,35 +7,35 @@ using namespace std;
 
 class Usuario: public Chave{
     private:
-        char* usuario = new char[12];
-        char* senha = new char[12];
+        string usuario;
+        string senha;
         char tipo;
         Chave chave;
 
     public:
         Usuario();
 
-        Usuario(const char[12], const char[12], const char&);
+        Usuario(const string&, const string&, const char&);
 
         ~Usuario();
 
-        void setUsuario(const char[12]);
+        void setUsuario(const string&);
 
-        void setSenha(const char[12]);
+        void setSenha(const string&);
 
-        void setTipo(char);
+        void setTipo(const char&);
 
-        char* getUsuario();
+        string getUsuario();
 
-        char* getSenha();
+        string getSenha();
 
         char getTipo();
 
-        void setChave(char*);
+        void setChave(const string&);
 
         void setChave();
 
-        char* getChave();
+        string getChave();
 
         friend ostream& operator<<(ostream&, const Usuario&);
 

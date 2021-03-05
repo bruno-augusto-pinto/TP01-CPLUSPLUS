@@ -1,38 +1,38 @@
 #ifndef pessoa_hpp
 #define pessoa_hpp
 
-#include <iostream>
-#include <stdlib.h>
+//#include <iostream>
+//#include <stdlib.h>
 #include "chave.hpp"
 
 using namespace std; 
 
 class Pessoa: public Chave{
     private:
-        char* nome = new char(12);
-        char* CPF = new char(10);
+        string nome;
+        string CPF;
         Chave chave;
 
     public:
         Pessoa();
 
-        Pessoa(const char[12], const char[10]);
+        Pessoa(const string&, const string&);
 
         virtual ~Pessoa();
 
-        void setNome(const char*);
+        void setNome(const string&);
 
-        void setCPF(const char*);
+        void setCPF(const string&);
 
         string getNome();
 
-        char* getCPF();
+        string getCPF();
 
-        void setChave(char*);
+        void setChave(const string&);
 
         void setChave();
 
-        char* getChave();
+        string getChave();
 
         friend ostream& operator<<(ostream&, const Pessoa&);
 

@@ -37,7 +37,7 @@ void imprimeUsuarios(const string& nome){
                 tipo = "Geral";
             break;
         }
-        printf("|%12s|%14s|", x.getUsuario(), tipo.c_str());
+        printf("|%12s|%14s|", x.getUsuario().c_str(), tipo.c_str());
         cout << endl;
     }
     in.close();
@@ -67,7 +67,7 @@ void imprimeFuncionarios(const string& nome, const bool& admin){
                     tipo = "Geral";
                 break;
             }
-            printf("|%12s|%10s|%14s|", x.getNome().c_str(), x.getCPF(), tipo.c_str());
+            printf("|%12s|%10s|%14s|", x.getNome().c_str(), x.getCPF().c_str(), tipo.c_str());
             cout << endl;
         }
     }else{

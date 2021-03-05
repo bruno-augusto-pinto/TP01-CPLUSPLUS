@@ -3,21 +3,23 @@
 
 #include <iostream>
 #include <cstring>
+#include <stdlib.h>
+#include <string>
 
 using namespace std; 
 
 class Chave{
     private:
-        char* chave = new char;
+        string chave;
 
     public:
         Chave();
 
         virtual ~Chave();
 
-        void setChave(char*);
+        void setChave(const string&);
 
-        char* getChave();
+        string getChave();
 
         friend ostream& operator<<(ostream&, const Chave&);
 

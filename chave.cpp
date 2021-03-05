@@ -4,11 +4,11 @@ Chave::Chave(){}
 
 Chave::~Chave(){}
 
-void Chave::setChave(char* chave){
+void Chave::setChave(const string& chave){
   this->chave = chave;
 }
 
-char* Chave::getChave(){
+string Chave::getChave(){
   return this->chave;
 }
 

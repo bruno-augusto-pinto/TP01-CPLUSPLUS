@@ -2,27 +2,27 @@
 
 Pessoa::Pessoa(){}
 
-Pessoa::Pessoa(const char nome[12], const char cpf[10]):nome((char*)nome), CPF((char*)cpf){}
+Pessoa::Pessoa(const string& nome, const string& cpf):nome(nome), CPF(cpf){}
 
 Pessoa::~Pessoa(){}
 
-void Pessoa::setNome(const char nome[12]){
-  this->nome = (char*)nome;
+void Pessoa::setNome(const string& nome){
+  this->nome = nome;
 }
 
-void Pessoa::setCPF(const char CPF[10]){
-  this->CPF = (char*)CPF;
+void Pessoa::setCPF(const string& CPF){
+  this->CPF = CPF;
 }
 
 string Pessoa::getNome(){
   return this->nome;
 }
 
-char* Pessoa::getCPF(){
+string Pessoa::getCPF(){
   return this->CPF;
 }
 
-void Pessoa::setChave(char* chave){
+void Pessoa::setChave(const string& chave){
   this->chave.setChave( chave );
 }
 
@@ -30,16 +30,17 @@ void Pessoa::setChave(){
   this->chave.setChave(CPF);
 }
 
-char* Pessoa::getChave(){
+string Pessoa::getChave(){
   return this->chave.getChave();
 }
 
 ostream& operator <<(ostream& out, const Pessoa& pessoa){
-  out << pessoa.chave << pessoa.nome << "\n" << pessoa.CPF;
+  out << pessoa.chave << "\n" <<  pessoa.nome << "\n" << pessoa.CPF;
   return out;
 }
 
 istream& operator >>(istream& in, Pessoa& pessoa){
+  in >> pessoa.chave;
   in >> pessoa.nome; 
   in >> pessoa.CPF; 
   return in;

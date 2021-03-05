@@ -2,15 +2,15 @@
 
 //Especialista::Especialista(){}
 
-Especialista::Especialista(const char* nome, const char* cpf, const char tipo):Funcionario(nome, cpf, tipo){}
+Especialista::Especialista(const string& nome, const string& cpf, const char tipo):Funcionario(nome, cpf, tipo){}
 
 Especialista::~Especialista(){}
 
-/*void Especialista::setNome(const char* nome){
+/*void Especialista::setNome(const string& nome){
   this->funcionario.setNome(nome);
 }
 
-void Especialista::setCPF(const char* cpf){
+void Especialista::setCPF(const string& cpf){
   this->funcionario.setCPF(cpf);
 }
 
