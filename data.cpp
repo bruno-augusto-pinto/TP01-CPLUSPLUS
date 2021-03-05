@@ -18,6 +18,18 @@ void Data::setAno(const int& ano){
   this->ano = ano;
 }
 
+int Data::getDia(){
+  return this->dia;
+}
+
+int Data::getMes(){
+  return this->mes;
+}
+
+int Data::getAno(){
+  return this->ano;
+}
+
 ostream& operator <<(ostream& out, const Data& data){
   out << data.dia << "\n" << data.mes << "\n" << data.ano << endl;
   return out;

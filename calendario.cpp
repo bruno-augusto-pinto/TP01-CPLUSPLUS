@@ -66,6 +66,56 @@ void Calendario::imprimeCalendario(int ano){
   }
 }
 
+void Calendario::imprimeMes(int ano, int mes){
+   printf ("\n         Calendario - %d\n", ano); 
+  //int dias;
+
+  //INDEX DO DIA DE 0 A 6
+  int atual = numerodoDia(1, 1, ano-1);
+
+  //i interage através de todos os meses
+  //j interage através dos dias do mes(i)
+  for (int i = 0; i < 12; i++)
+  {
+    int dias = numerodeDias(i+1, ano-1);
+    if (i == mes-1)
+    {  
+      //IMPRIME O MES
+      printf("--------------%s---------------\n", getNomeMes(i).c_str()); 
+      //IMPRIME COLUNAS
+      printf("  Dom  Seg  Ter  Qua  Qui  Sex  Sab\n");
+    }
+      int k;
+      for (k = 0; k < atual; k++)
+        if (i == mes-1)
+        {  
+          printf("     ");
+        }
+
+      for (int j = 0; j <= dias; j++)
+      {
+        if (i == mes-1)
+        {  
+          printf("%5d", j);
+        }
+        if (++k > 6){
+          k = 0;
+          if (i == mes-1)
+          {  
+            printf("\n");
+          }
+        }
+      }
+      if (k)
+        if (i == mes-1)
+        {  
+          printf("\n");
+        }
+
+      atual = k;
+  }
+}
+
 int comparaHora(int dia, int mes, int ano){
   time_t hoje;
   struct tm * hojeinfo;
@@ -75,4 +125,12 @@ int comparaHora(int dia, int mes, int ano){
     return 0;
   }
   return 1;
+}
+
+int getAnoAtual(){
+  time_t hoje;
+  struct tm * hojeinfo;
+  time (&hoje);
+  hojeinfo = localtime (&hoje);
+  return (1900 + hojeinfo->tm_year);
 }

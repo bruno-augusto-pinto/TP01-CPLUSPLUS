@@ -1,12 +1,12 @@
 #include "especialista.hpp"
 
-//Especialista::Especialista(){}
+Especialista::Especialista(){}
 
 Especialista::Especialista(const string& nome, const string& cpf, const char tipo):Funcionario(nome, cpf, tipo){}
 
 Especialista::~Especialista(){}
 
-/*void Especialista::setNome(const string& nome){
+void Especialista::setNome(const string& nome){
   this->funcionario.setNome(nome);
 }
 
@@ -18,9 +18,22 @@ string Especialista::getNome(){
   return this->funcionario.getNome();
 }
 
-char* Especialista::getCPF(){
+string Especialista::getCPF(){
   return this->funcionario.getCPF();
+}
+
+/*void setChave(){
+
 }*/
+
+void Especialista::setChave(const string& chave){
+  this->CDOMD.setChave(chave);
+}
+
+string Especialista::getChave(){
+  return this->CDOMD.getChave();
+}
+
 
 void Especialista::setTipo(const char& tipo){
   this->funcionario.setTipo(tipo);
@@ -39,11 +52,12 @@ Agenda Especialista::getAgenda(){
 }
 
 ostream& operator <<(ostream& out, const Especialista& especialista){
-  out << especialista.funcionario << endl;
+  out <<  especialista.CDOMD << especialista.funcionario;
   return out;
 }
 
 istream& operator >>(istream& in, Especialista& especialista){
+  in >> especialista.CDOMD;
   in >> especialista.funcionario; 
   return in;
 }

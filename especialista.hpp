@@ -11,7 +11,7 @@ class Especialista: public Funcionario{
     private:
         Funcionario funcionario;
         Agenda agenda;
-        Chave CDOMD; //Código Deontológico da OMD
+        Chave CDOMD;
         
     public:
         Especialista();
@@ -31,6 +31,12 @@ class Especialista: public Funcionario{
         void setTipo(const char&);
 
         char getTipo();
+
+        void setChave();
+
+        void setChave(const string&);
+
+        string getChave();
 
         void setAgenda(const Agenda&);
 

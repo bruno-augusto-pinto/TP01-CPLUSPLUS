@@ -37,12 +37,14 @@ class Clinica {
 
         void menuAgenda(const Usuario& usuario);
 
+        void listaAgenda();
+
         void opcoesdaConta();
 
         void setFiles();
 
         template <typename Objeto>
-        int altremove(string arquivo, string tiponome, string tipochave, string operacao){
+        int altremove(const string& arquivo, const string& tiponome, const string& tipochave, const string& operacao){
             string chave;
             cout << endl << "DIGITE O " << tipochave <<  " DO "  << tiponome << " QUE DESEJA " << operacao << ": ";           
             cin >> chave;

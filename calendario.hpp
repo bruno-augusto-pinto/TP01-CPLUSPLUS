@@ -47,8 +47,12 @@ class Calendario{
         int numerodeDias(int, int);
 
         void imprimeCalendario(int);
+
+        void imprimeMes(int, int);
 };
 
 int comparaHora(int, int, int);
+
+int getAnoAtual();
 
 #endif

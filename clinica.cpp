@@ -18,7 +18,7 @@
         int opc = -1;
         do 
         {
-            cout << endl << "MENU PRINCIPAL: " << endl << "(1) LOGIN" << endl << "(2) REGISTRO" << endl << "(3) EXPERIMENTAL CALENDARIO" << endl << "(0) FINALIZAR" << endl << "ESCOLHA: ";
+            cout << endl << "MENU PRINCIPAL: " << endl << "(1) LOGIN" << endl << "(2) REGISTRO" << endl << "(0) FINALIZAR" << endl << "ESCOLHA: ";
             cin >> opc;
             switch (opc)
             {
@@ -28,18 +28,6 @@
 
                 case 2:
                     this->cadastro(false, "usuarios.bin"); 
-                break;
-
-                case 3:
-                {
-                    if ( !comparaHora(3, 2, 2021) ){
-                        perror("ERRO! VOCÊ NÃO PODE AGENDAR CONSULTA DE UM DIA QUE JÁ PASSOU!");
-                    }else{
-                        cout << endl << "DATA VALIDA";
-                    }
-                    Calendario calendario;
-                    calendario.imprimeCalendario(2020);
-                }
                 break;
 
                 case 0:
@@ -181,7 +169,7 @@
             switch (opc)
             {
                 case 1:
-                    cadastro(true, arquivo);
+                    this->cadastro(true, arquivo);
                 break;
 
                 case 2:
@@ -190,7 +178,7 @@
 
                 case 3:
                     if (altremove<Usuario>(arquivo, "USUARIO", "NOME", "ALTERAR")){
-                        cadastro(true, arquivo);
+                        this->cadastro(true, arquivo);
                     }
                 break;
 
@@ -216,6 +204,8 @@
     void Clinica::crudFuncionario()
     {
         string arquivo = "funcionarios.bin";
+        string chave, tipo;
+        bool controle = false;
         int opc = -1;
         cout << endl <<"MENU ADMINISTRATIVO DE FUNCIONARIOS";
         do {
@@ -234,11 +224,63 @@
                 break;
 
                 case 3:
+                    cout << endl << "(1) ESPECIALISTA" << endl << "(2) OUTROS";
+                    cout << endl  << "ESCOLHA: ";
+                    do
+                    {
+                        cin >> opc;
+                        switch (opc)
+                        {
+                            case 1:
+                                chave = "CDOMD";
+                                tipo = "ESPECIALISTA";
+                                controle = true;
+                            break;
 
+                            case 2:
+                                chave = "CPF";
+                                tipo = "FUNCIONARIO";
+                                controle = true;
+                            break;
+                            
+                            default:
+                                cout << "INVALIDO! TENTE NOVAMENTE!";
+                        }
+                    } while (!controle);
+                    if (altremove<Funcionario>(arquivo, tipo, chave, "ALTERAR")){
+                        this->registraFuncionario(arquivo);
+                    }   
                 break;
 
                 case 4:
+                    cout << endl << "(1) ESPECIALISTA" << endl << "(2) OUTROS";
+                    cout << endl  << "ESCOLHA: ";
+                    do
+                    {
+                        cin >> opc;
+                        switch (opc)
+                        {
+                            case 1:
+                                chave = "CDOMD";
+                                tipo = "ESPECIALISTA";
+                                controle = true;
+                            break;
 
+                            case 2:
+                                chave = "CPF";
+                                tipo = "FUNCIONARIO";
+                                controle = true;
+                            break;
+                            
+                            default:
+                                cout << "INVALIDO! TENTE NOVAMENTE!";
+                        }
+                    } while (!controle);
+                    if (!altremove<Funcionario>(arquivo, tipo, chave, "REMOVER")){
+                        cout << endl << "ERRO! FUNCIONARIO NÃO EXISTE!" << endl;
+                    }else{
+                        cout << endl << "FUNCIONARIO REMOVIDO!" << endl;
+                    }   
                 break;
 
                 case 0:
@@ -255,6 +297,7 @@
     void Clinica::registraFuncionario(const string& arquivo){
         string nome;
         string cpf;
+        string chave;
         int opc = -1;
         char tipo;
         cout << endl << "INSIRA O NOME: ";
@@ -271,19 +314,25 @@
             switch (opc)
             {
                 case 1:
-                    //funcionario = new Especialista;
+                {
+                    cout << endl << "INSIRA O CDOMD DO ESPECIALISTA: ";
+                    cin >> chave;
                     tipo = 'E';
+                    funcionario.setChave(chave);
                     opc = 0;
+                }
                 break;
 
                 case 2:
                     tipo = 'A';
                     opc = 0;
+                    funcionario.setChave();
                 break;
 
                 case 3:
                     tipo = 'R';
                     opc = 0;
+                    funcionario.setChave();
                 break;
                 
                 default:
@@ -293,13 +342,23 @@
         }while(opc != 0);
         funcionario.setNome(nome);
         funcionario.setCPF(cpf);
-        funcionario.setTipo(tipo);
-        funcionario.setChave();
+        funcionario.setTipo(tipo);            
         if (verifica<Funcionario, vector<Funcionario>>(funcionario, arquivo)){
-           cout << endl << "FUNCIONARIO JA CADASTRADO!" << endl;
+            cout << endl << "FUNCIONARIO JA CADASTRADO!" << endl;
         }else{
-            registra<Funcionario>(funcionario, arquivo);
-            cout << endl << "FUNCIONARIO CADASTRADO COM SUCESSO!" << endl;
+            if (tipo == 'E'){
+                 Funcionario temp;
+                 temp.setChave(cpf);
+                if (verifica<Funcionario, vector<Funcionario>>(temp, arquivo)){
+                    cout << endl << "FUNCIONARIO JA CADASTRADO!" << endl;
+                }else{
+                    registra<Funcionario>(funcionario, arquivo);
+                    cout << endl << "FUNCIONARIO CADASTRADO COM SUCESSO!" << endl;
+                }
+            }else{
+                registra<Funcionario>(funcionario, arquivo);
+                cout << endl << "FUNCIONARIO CADASTRADO COM SUCESSO!" << endl;
+            }
         }
     }
 
@@ -380,7 +439,7 @@
                 break;
 
                 case 2:
-
+                    listaAgenda();
                 break;
 
                 case 3:
@@ -395,6 +454,52 @@
                     cout << endl << "OPÇÃO INVALIDA! TENTE NOVAMENTE." << endl;
             }
         }while(opc != 0);
+    }
+
+    void Clinica::listaAgenda(){
+        string funcionario = "funcionarios.bin";
+        string chave;
+        imprimeFuncionarios(funcionario, false);
+        cout << "INSIRA O CDOMD DE UM DOS ESPECIALISTAS: ";
+        cin >> chave;
+        Especialista especialista;
+        especialista.setChave(chave);
+        if (!verifica<Especialista, vector<Especialista>>(especialista, funcionario)){
+            cout << endl << "ESPECIALISTA NÃO EXISTE!" << endl;
+        }else{
+            int ano = getAnoAtual();
+            int mes, dia;
+            cout << "INSIRA O MES DE " << ano << " QUE DESEJA ACESSAR" << endl;
+            cout << "(1) Janeiro" << endl << "(2) Fevereiro" << endl << "(3) Março" << endl;
+            cout << "(4) Abril" << endl << "(5) Maio" << endl << "(6) Junho" << endl;
+            cout << "(7) Julho" << endl << "(8) Agosto" << endl << "(9) Setembro" << endl;
+            cout << "(10) Outubro" << endl << "(11) Novembro" << endl << "(12) Dezembro";
+            cout << "ESCOLHA: ";
+            do {
+                cin >> mes;
+                if (mes < 1 || mes > 12) {
+                    cout << endl << "MES INVALIDO TENTE NOVAMENTE";
+                }
+            }while(mes < 1 || mes > 12);
+            Calendario calendario;
+            calendario.imprimeMes(ano, mes);
+            cout << endl << "ESCOLHA UM DIA: ";
+            cin >> dia;
+            if ( !comparaHora(dia, mes, ano) ){
+                perror("ERRO! VOCÊ NÃO PODE AGENDAR UMA CONSULTA EM UM DIA QUE JÁ PASSOU!");
+            }else{
+                string arqAgenda = "agenda.bin";
+                especialista = getObjeto<Especialista, vector<Especialista>>(especialista, funcionario);
+                Agenda agenda(dia, mes, ano);
+                agenda.setFuncionario(especialista.getChave());
+                agenda.setChave();
+                if (!verifica<Agenda, vector<Agenda>>(agenda, arqAgenda)){
+                    agenda = getObjeto<Agenda, vector<Agenda>>(agenda, arqAgenda);
+                }
+                cout << endl << "AGENDA DE " << especialista.getNome() << " NA DATA " << dia << "/" << mes << "/" << ano << ":" << endl;
+                agenda.imprimeAgenda();
+            }
+        } 
     }
 
     void Clinica::opcoesdaConta(){

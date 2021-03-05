@@ -43,27 +43,66 @@ void Agenda::setFuncionario(const string& funcionario){
   this->funcionario = funcionario;
 }
 
+string Agenda::getPaciente(const int& codigo){
+  return this->paciente[codigo];
+}
+
 bool Agenda::getDisponibilidade(const int& codigo){
   return this->disponibilidade[codigo];
 }
 
+string Agenda::getHorario(const int& codigo){
+  return this->horario[codigo];
+}
+
+//https://stackoverflow.com/questions/191757/how-to-concatenate-a-stdstring-and-an-int
+void Agenda::setChave(){
+  string chave = funcionario + std::to_string(data.getDia()) + std::to_string(data.getMes()) + std::to_string(data.getAno());
+  this->chave.setChave(chave);
+}
+
+string Agenda::getChave(){
+  return this->chave.getChave();
+}
+
+void Agenda::imprimeAgenda(){
+    printf("|%6s|%7s|%10s|", "CODIGO", "HORARIO", "DISPONIBILIDADE");
+    cout << endl;
+    string disponibilidade;
+    for (int i = 0; i < 5; i++){
+        if (this->getDisponibilidade(i)){
+            disponibilidade = "DISPONIVEL";
+        }else{
+            disponibilidade = "INDISPONIVEL";
+        }
+        printf("|%6i|%7s|%10s|", i, this->getHorario(i).c_str(), disponibilidade.c_str());
+        cout << endl;
+    }
+}
+
 ostream& operator <<(ostream& out, const Agenda& agenda){
-  out << agenda.data << "\n" << agenda.funcionario << "\n";
+  out << agenda.chave << "\n" << agenda.data << "\n" << agenda.funcionario << "\n";
   for (int i = 0; i < 5; i++){
-    out << agenda.codigo[i] << "\n" << agenda.horario[i] << "\n";
-    out << agenda.disponibilidade[i] << agenda.paciente[i] << endl;
+    if (!agenda.disponibilidade[i]) {
+      out << agenda.codigo[i] << "\n" << "\n" << agenda.horario[i] << "\n";
+      out << agenda.disponibilidade[i] << "\n" << agenda.paciente[i];
+    }
   }
+  out << endl;
   return out;
 }
 
 istream& operator>>(istream& in, Agenda& agenda){
+  in >> agenda.chave;
   in >> agenda.data; 
   in >> agenda.funcionario;
   for (int i = 0; i < 5; i++){
-    in >> agenda.codigo[i];
-    in >> agenda.horario[i];
-    in >> agenda.disponibilidade[i];
-    in >> agenda.paciente[i];
+    if (!agenda.disponibilidade[i]) {
+      in >> agenda.codigo[i];
+      in >> agenda.horario[i];
+      in >> agenda.disponibilidade[i];
+      in >> agenda.paciente[i];
+    }
   }
   return in;
 }

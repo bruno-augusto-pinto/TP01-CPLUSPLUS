@@ -24,6 +24,12 @@ class Data{
 
         void setAno(const int&);
 
+        int getDia();
+
+        int getMes();
+
+        int getAno();
+
         friend ostream& operator <<(ostream&, const Data&);
 
         friend istream& operator >>(istream&, Data&);

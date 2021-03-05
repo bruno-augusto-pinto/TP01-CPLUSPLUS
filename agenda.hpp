@@ -5,10 +5,11 @@
 #include <stdlib.h>
 
 #include "data.hpp"
+#include "chave.hpp"
 
 using namespace std; 
 
-class Agenda{
+class Agenda: public Chave{
     private:
       Data data;
       string horario[5];
@@ -16,6 +17,7 @@ class Agenda{
       bool disponibilidade[5];
       string paciente[5];
       string funcionario;
+      Chave chave;
 
     public:
         Agenda();
@@ -30,9 +32,19 @@ class Agenda{
 
         void setPaciente(const string&, const int&);
 
+        string getPaciente(const int&);
+
         void setFuncionario(const string&);
 
         bool getDisponibilidade(const int&);
+
+        string getHorario(const int&);
+
+        void setChave();
+
+        string getChave();
+
+        void imprimeAgenda();
 
         friend ostream& operator <<(ostream&, const Agenda&);
 

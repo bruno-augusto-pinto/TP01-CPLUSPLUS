@@ -17,6 +17,7 @@ void limpa(const string&);
 
 void imprimeUsuarios(const string&);
 void imprimeFuncionarios(const string&, const bool&);
+void imprimeAgenda(const string&, const bool&);
 
 
 template <typename Objeto, typename Container>
