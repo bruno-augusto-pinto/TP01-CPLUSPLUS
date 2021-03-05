@@ -131,7 +131,7 @@
         cout << endl << "MENU DO ADMINISTRADOR";
         do {
             cout << endl << "(1) ADMINISTRAR USUARIOS" << endl << "(2) ADMNISTRAR FUNCIONARIOS"; 
-            cout << endl << "(0) FINALIZAR EXECUÇÃO" << endl << "ESCOLHA: ";
+            cout << endl << "(3) AGENDA" << endl << "(0) FINALIZAR EXECUÇÃO" << endl << "ESCOLHA: ";
             cin >> opc;
             switch (opc)
             {
@@ -141,6 +141,10 @@
 
                 case 2:
                     this->crudFuncionario();
+                break;
+
+                case 3:
+                    menuAgenda(usuario);
                 break;
 
                 case 0:
@@ -367,13 +371,13 @@
         int opc = -1;
         cout << endl << "MENU DO ASSISTENTE ADMINISTRADOR" << endl;
         do {
-            cout << "(1) " << endl << "(2) "<< endl; 
+            cout << "(1) AGENDA" << endl << "(2) "<< endl; 
             cout << "(0) FINALIZAR EXECUÇÃO" << endl << "ESCOLHA: ";
             cin >> opc;
             switch (opc)
             {
                 case 1:
-                    
+                    menuAgenda(usuario);
                 break;
 
                 case 2:
@@ -423,23 +427,29 @@
     }
 
     void Clinica::menuAgenda(const Usuario& usuario){
-        cout << endl << "MENU DE AGENDA DE CONSULTAS.";
-        cout << endl << "(1) AGENDAR UMA CONSULTA";
-        cout << endl << "(2) LISTAR AGENDA DE CONSULTAS";
-        cout << endl << "(3) DESMARCAR UMA CONSULTA";
-        cout << endl << "(4) HISTORICO DE CONSULTAS";
-        cout << endl << "ESCOLHA: ";
+        string funcionario = "funcionarios.bin";
+        string arqAgenda = "agenda.bin";
+        Especialista especialista;
+        Agenda agenda;
+        Data data;
         int opc = -1;
         do {
+            cout << endl << "MENU DE AGENDA DE CONSULTAS.";
+            cout << endl << "(1) AGENDAR UMA CONSULTA";
+            cout << endl << "(2) LISTAR AGENDA";
+            cout << endl << "(3) DESMARCAR UMA CONSULTA";
+            cout << endl << "(4) HISTORICO DE CONSULTAS";
+            cout << endl << "(0) SAIR";
+            cout << endl << "ESCOLHA: ";
             cin >> opc;
             switch (opc) 
             {
                 case 1:
-
+                    setConsulta(funcionario, arqAgenda, especialista, agenda, data, usuario);
                 break;
 
                 case 2:
-                    listaAgenda();
+                    listaAgenda(funcionario, arqAgenda, especialista, agenda, data);
                 break;
 
                 case 3:
@@ -456,13 +466,41 @@
         }while(opc != 0);
     }
 
-    void Clinica::listaAgenda(){
-        string funcionario = "funcionarios.bin";
+    void Clinica::setConsulta(const string& funcionario, const string& arqAgenda, Especialista& especialista, Agenda& agenda, Data& data, Usuario usuario){
+        if (!listaAgenda(funcionario, arqAgenda, especialista, agenda, data)){
+            cout << endl << "INVALIDO! TENTE NOVAMENTE" << endl;
+        }else{
+            int codigo;
+            bool ok = false;
+            do {
+                cout << endl << "INSIRA O CODIGO DO HORARIO EM QUE DESEJA FAZER A CONSULTA MO DIA " << data.getDia() << "/" << data.getMes() << "/" << data.getAno() << ": ";
+                cin >> codigo;
+                if (codigo < 0 || codigo > 4) {
+                    cout << endl << "CODIGO INVALIDO! TENTE NOVAMENTE" << endl;
+                }else{
+                    ok = true;
+                }
+            }while(!ok);
+            if (!agenda.getDisponibilidade(codigo)){
+                cout << endl << "INVALIDO! HORARIO INDISPONIVEL!" << endl;
+            }else{
+                string paciente;
+                cout << endl << "DIGITE O NOME DO PACIENTE: ";
+                cin >> paciente;
+                agenda.setUsuario(usuario.getUsuario(), codigo);
+                agenda.setPaciente(paciente, codigo);
+                agenda.setDisponibilidade(false, codigo);
+                registra<Agenda>(agenda, arqAgenda);
+                cout << endl << "CONSULTA AGENDADA COM SUCESSO!" << endl;
+            }
+        }
+    }
+
+    int Clinica::listaAgenda(const string& funcionario, const string& arqAgenda, Especialista& especialista, Agenda& agenda, Data& data){
         string chave;
         imprimeFuncionarios(funcionario, false);
         cout << "INSIRA O CDOMD DE UM DOS ESPECIALISTAS: ";
         cin >> chave;
-        Especialista especialista;
         especialista.setChave(chave);
         if (!verifica<Especialista, vector<Especialista>>(especialista, funcionario)){
             cout << endl << "ESPECIALISTA NÃO EXISTE!" << endl;
@@ -474,7 +512,7 @@
             cout << "(4) Abril" << endl << "(5) Maio" << endl << "(6) Junho" << endl;
             cout << "(7) Julho" << endl << "(8) Agosto" << endl << "(9) Setembro" << endl;
             cout << "(10) Outubro" << endl << "(11) Novembro" << endl << "(12) Dezembro";
-            cout << "ESCOLHA: ";
+            cout << endl << "ESCOLHA: ";
             do {
                 cin >> mes;
                 if (mes < 1 || mes > 12) {
@@ -488,18 +526,22 @@
             if ( !comparaHora(dia, mes, ano) ){
                 perror("ERRO! VOCÊ NÃO PODE AGENDAR UMA CONSULTA EM UM DIA QUE JÁ PASSOU!");
             }else{
-                string arqAgenda = "agenda.bin";
                 especialista = getObjeto<Especialista, vector<Especialista>>(especialista, funcionario);
-                Agenda agenda(dia, mes, ano);
+                data.setDia(dia);
+                data.setMes(mes);
+                data.setAno(ano);
+                agenda.setData(data);
                 agenda.setFuncionario(especialista.getChave());
                 agenda.setChave();
                 if (!verifica<Agenda, vector<Agenda>>(agenda, arqAgenda)){
                     agenda = getObjeto<Agenda, vector<Agenda>>(agenda, arqAgenda);
                 }
-                cout << endl << "AGENDA DE " << especialista.getNome() << " NA DATA " << dia << "/" << mes << "/" << ano << ":" << endl;
+                cout << endl << "AGENDA DE " << especialista.getCPF() << " NA DATA " << dia << "/" << mes << "/" << ano << ":" << endl;
                 agenda.imprimeAgenda();
+                return 1;
             }
-        } 
+        }
+        return 0; 
     }
 
     void Clinica::opcoesdaConta(){

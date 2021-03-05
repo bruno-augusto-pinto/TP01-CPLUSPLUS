@@ -55,7 +55,6 @@ string Agenda::getHorario(const int& codigo){
   return this->horario[codigo];
 }
 
-//https://stackoverflow.com/questions/191757/how-to-concatenate-a-stdstring-and-an-int
 void Agenda::setChave(){
   string chave = funcionario + std::to_string(data.getDia()) + std::to_string(data.getMes()) + std::to_string(data.getAno());
   this->chave.setChave(chave);
@@ -63,6 +62,14 @@ void Agenda::setChave(){
 
 string Agenda::getChave(){
   return this->chave.getChave();
+}
+
+void Agenda::setUsuario(const string& usuario, const int& codigo){
+  this->usuario[codigo] = usuario;
+}
+
+string Agenda::getUsuario(const int& codigo){
+  return this->usuario[codigo];
 }
 
 void Agenda::imprimeAgenda(){

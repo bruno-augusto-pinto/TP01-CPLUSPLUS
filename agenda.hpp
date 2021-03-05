@@ -17,6 +17,7 @@ class Agenda: public Chave{
       bool disponibilidade[5];
       string paciente[5];
       string funcionario;
+      string usuario[5];
       Chave chave;
 
     public:
@@ -43,6 +44,10 @@ class Agenda: public Chave{
         void setChave();
 
         string getChave();
+
+        void setUsuario(const string&, const int&);
+
+        string getUsuario(const int&);
 
         void imprimeAgenda();
 
