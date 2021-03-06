@@ -429,9 +429,6 @@
     void Clinica::menuAgenda(const Usuario& usuario){
         string funcionario = "funcionarios.bin";
         string arqAgenda = "agenda.bin";
-        Especialista especialista;
-        Agenda agenda;
-        Data data;
         int opc = -1;
         do {
             cout << endl << "MENU DE AGENDA DE CONSULTAS.";
@@ -445,11 +442,11 @@
             switch (opc) 
             {
                 case 1:
-                    setConsulta(funcionario, arqAgenda, especialista, agenda, data, usuario);
+                    setConsulta(funcionario, arqAgenda, usuario);
                 break;
 
                 case 2:
-                    listaAgenda(funcionario, arqAgenda, especialista, agenda, data);
+                    listaAgenda(funcionario, arqAgenda);
                 break;
 
                 case 3:
@@ -466,41 +463,42 @@
         }while(opc != 0);
     }
 
-    void Clinica::setConsulta(const string& funcionario, const string& arqAgenda, Especialista& especialista, Agenda& agenda, Data& data, Usuario usuario){
-        if (!listaAgenda(funcionario, arqAgenda, especialista, agenda, data)){
-            cout << endl << "INVALIDO! TENTE NOVAMENTE" << endl;
-        }else{
-            int codigo;
-            bool ok = false;
-            do {
-                cout << endl << "INSIRA O CODIGO DO HORARIO EM QUE DESEJA FAZER A CONSULTA MO DIA " << data.getDia() << "/" << data.getMes() << "/" << data.getAno() << ": ";
-                cin >> codigo;
-                if (codigo < 0 || codigo > 4) {
-                    cout << endl << "CODIGO INVALIDO! TENTE NOVAMENTE" << endl;
-                }else{
-                    ok = true;
-                }
-            }while(!ok);
-            if (!agenda.getDisponibilidade(codigo)){
-                cout << endl << "INVALIDO! HORARIO INDISPONIVEL!" << endl;
+    void Clinica::setConsulta(const string& funcionario, const string& arqAgenda, Usuario usuario){
+        Agenda agenda = listaAgenda(funcionario, arqAgenda);
+        Data data = agenda.getData();
+        int codigo;
+        bool ok = false;
+        do {
+            cout << endl << "INSIRA O CODIGO DO HORARIO EM QUE DESEJA FAZER A CONSULTA MO DIA " << data.getDia() << "/" << data.getMes() << "/" << data.getAno() << ": ";
+            cin >> codigo;
+            if (codigo < 0 || codigo > 4) {
+                cout << endl << "CODIGO INVALIDO! TENTE NOVAMENTE" << endl;
             }else{
-                string paciente;
-                cout << endl << "DIGITE O NOME DO PACIENTE: ";
-                cin >> paciente;
-                agenda.setUsuario(usuario.getUsuario(), codigo);
-                agenda.setPaciente(paciente, codigo);
-                agenda.setDisponibilidade(false, codigo);
-                if (verifica<Agenda, vector<Agenda>>(agenda, arqAgenda)){
-                    remove<Agenda, vector<Agenda>>(agenda, arqAgenda);
-                }
-                registra<Agenda>(agenda, arqAgenda);
-                cout << endl << "CONSULTA AGENDADA COM SUCESSO!" << endl;
+                ok = true;
             }
+        }while(!ok);
+        if (!agenda.getDisponibilidade(codigo)){
+            cout << endl << "INVALIDO! HORARIO INDISPONIVEL!" << endl;
+        }else{
+            string paciente;
+            cout << endl << "DIGITE O NOME DO PACIENTE: ";
+            cin >> paciente;
+            agenda.setUsuario(usuario.getUsuario(), codigo);
+            agenda.setPaciente(paciente, codigo);
+            agenda.setDisponibilidade(false, codigo);
+            if (verifica<Agenda, vector<Agenda>>(agenda, arqAgenda)){
+                remove<Agenda, vector<Agenda>>(agenda, arqAgenda);
+            }
+            registra<Agenda>(agenda, arqAgenda);
+            cout << endl << "CONSULTA AGENDADA COM SUCESSO!" << endl;
         }
     }
 
-    int Clinica::listaAgenda(const string& funcionario, const string& arqAgenda, Especialista& especialista, Agenda& agenda, Data& data){
+    Agenda Clinica::listaAgenda(const string& funcionario, const string& arqAgenda){
         string chave;
+        Agenda temporaria;
+        Especialista especialista;
+        Data data;
         imprimeFuncionarios(funcionario, false);
         cout << "INSIRA O CDOMD DE UM DOS ESPECIALISTAS: ";
         cin >> chave;
@@ -533,18 +531,18 @@
                 data.setDia(dia);
                 data.setMes(mes);
                 data.setAno(ano);
-                agenda.setData(data);
-                agenda.setFuncionario(especialista.getChave());
-                agenda.setChave();
-                if (verifica<Agenda, vector<Agenda>>(agenda, arqAgenda)){
-                    agenda = getObjeto<Agenda, vector<Agenda>>(agenda, arqAgenda);
+                temporaria.setData(data);
+                temporaria.setFuncionario(especialista.getChave());
+                temporaria.setChave();
+                if (verifica<Agenda, vector<Agenda>>(temporaria, arqAgenda)){
+                    temporaria = getObjeto<Agenda, vector<Agenda>>(temporaria, arqAgenda);
                 }
                 cout << endl << "AGENDA DE " << especialista.getNome() << " NA DATA " << dia << "/" << mes << "/" << ano << ":" << endl;
-                agenda.imprimeAgenda();
-                return 1;
+                temporaria.imprimeAgenda();
+                return temporaria;
             }
         }
-        return 0; 
+        return temporaria;
     }
 
     void Clinica::opcoesdaConta(){

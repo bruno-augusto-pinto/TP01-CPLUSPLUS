@@ -31,6 +31,10 @@ void Agenda::setData(const Data& data){
   this->data = data;
 }
 
+Data Agenda::getData(){
+  return this->data;
+}
+
 void Agenda::setDisponibilidade(const bool& disponibilidade, const int& codigo){
   this->disponibilidade[codigo] = disponibilidade;
 }
@@ -90,11 +94,9 @@ void Agenda::imprimeAgenda(){
 ostream& operator <<(ostream& out, const Agenda& agenda){
   out << agenda.chave << "\n" << agenda.data << "\n" << agenda.funcionario;
   for (int i = 0; i < 5; i++){
-    //if (!agenda.disponibilidade[i]) {
-      out << "\n" << agenda.codigo[i] << "\n" << agenda.horario[i] << "\n";
-      out << agenda.disponibilidade[i] << "\n" << agenda.paciente[i] << "\n";
-      out << agenda.usuario[i];
-    //}
+    out << "\n" << agenda.codigo[i] << "\n" << agenda.horario[i] << "\n";
+    out << agenda.disponibilidade[i] << "\n" << agenda.paciente[i] << "\n";
+    out << agenda.usuario[i];
   }
   out << endl;
   return out;

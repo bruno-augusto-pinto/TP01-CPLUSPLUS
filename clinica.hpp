@@ -37,9 +37,9 @@ class Clinica {
 
         void menuAgenda(const Usuario& usuario);
 
-        void setConsulta(const string&, const string&, Especialista&, Agenda&, Data&, Usuario);
+        void setConsulta(const string&, const string&, Usuario);
 
-        int listaAgenda(const string&, const string&, Especialista&, Agenda&, Data&);
+        Agenda listaAgenda(const string&, const string&);
 
         void opcoesdaConta();
 

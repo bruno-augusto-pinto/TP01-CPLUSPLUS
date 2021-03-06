@@ -29,6 +29,8 @@ class Agenda: public Chave{
 
         void setData(const Data&);
 
+        Data getData();
+
         void setDisponibilidade(const bool&, const int&);
 
         void setPaciente(const string&, const int&);
@@ -50,6 +52,8 @@ class Agenda: public Chave{
         string getUsuario(const int&);
 
         void imprimeAgenda();
+
+        friend ostream& operator <<(ostream&, const string&);
 
         friend ostream& operator <<(ostream&, const Agenda&);
 

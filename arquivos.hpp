@@ -5,6 +5,7 @@
 #include <vector>
 #include <experimental/filesystem> 
 #include <iterator>
+#include <algorithm>
 
 #include "usuario.hpp"
 #include "especialista.hpp"
@@ -24,8 +25,20 @@ template <typename Objeto, typename Container>
 void setObjetos(const string& nome, Container& objetos){
     ifstream in (nome.c_str());
     Objeto temporario;
+    if(typeid(Objeto).name() == typeid(Agenda).name()){
+        while (!in.eof()){
+            Objeto temp;
+            if (!objetos.empty()) {
+                temp = objetos.back();
+            }
+            in >> temporario;
+            if (temp.getChave() == temporario.getChave()){
+                break;
+            }
+            objetos.push_back(temporario);
+        }
+    }
     while(in >> temporario){
-        cout << endl << "TEMPORARIO: " << temporario << endl;
         objetos.push_back(temporario);
     }
     in.close();
@@ -59,10 +72,7 @@ int verifica(Objeto objeto, const string& nome){
     Container objetos;
     setObjetos<Objeto, Container>(nome, objetos);
     for (auto it : objetos) {
-        cout << endl << "CHAVE IT: " << it.getChave() << endl;
-        cout << endl << "CHAVE OBJETO: " << objeto.getChave() << endl;
         if (it.getChave() == objeto.getChave()){
-            cout << "agenda existe";
             return 1;
         }
     }
