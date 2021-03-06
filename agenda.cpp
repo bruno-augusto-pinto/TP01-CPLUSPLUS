@@ -92,28 +92,29 @@ void Agenda::imprimeAgenda(){
 }
 
 ostream& operator <<(ostream& out, const Agenda& agenda){
-  out << agenda.chave << "\n" << agenda.data << "\n" << agenda.funcionario;
   for (int i = 0; i < 5; i++){
-    out << "\n" << agenda.codigo[i] << "\n" << agenda.horario[i] << "\n";
-    out << agenda.disponibilidade[i] << "\n" << agenda.paciente[i] << "\n";
-    out << agenda.usuario[i];
+    out << agenda.codigo[i] << "\n" << agenda.horario[i] << "\n";
+    out << agenda.disponibilidade[i] << "\n";
+    if (agenda.disponibilidade[i]) {
+      out << "-------" << "\n" << "-------" << "\n";
+    }else{
+      out << agenda.paciente[i] << "\n" << agenda.usuario[i] << "\n";
+    }
   }
-  out << endl;
+  out << agenda.chave << "\n" << agenda.data << "\n" << agenda.funcionario << endl;
   return out;
 }
 
 istream& operator>>(istream& in, Agenda& agenda){
+  for (int i = 0; i < 5; i++){
+    in >> agenda.codigo[i];
+    in >> agenda.horario[i];
+    in >> agenda.disponibilidade[i];
+    in >> agenda.paciente[i];
+    in >> agenda.usuario[i];
+  }
   in >> agenda.chave;
   in >> agenda.data; 
   in >> agenda.funcionario;
-  for (int i = 0; i < 5; i++){
-    //if (!agenda.disponibilidade[i]) {
-      in >> agenda.codigo[i];
-      in >> agenda.horario[i];
-      in >> agenda.disponibilidade[i];
-      in >> agenda.paciente[i];
-      in >> agenda.usuario[i];
-    //}
-  }
   return in;
 }

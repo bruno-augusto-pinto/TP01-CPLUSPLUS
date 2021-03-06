@@ -9,7 +9,7 @@ class Funcionario: public Pessoa{
     private:
         Pessoa pessoa;
         char tipo;
-
+        
     public:
         Funcionario();
 

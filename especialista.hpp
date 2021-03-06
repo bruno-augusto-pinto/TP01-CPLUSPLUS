@@ -2,8 +2,6 @@
 #define especialista_hpp
 
 #include "funcionario.hpp"
-//#include "assistente.hpp"
-//#include "agenda.hpp"
 
 using namespace std; 
 

@@ -16,8 +16,8 @@ class Agenda: public Chave{
       int codigo[5];
       bool disponibilidade[5];
       string paciente[5];
-      string funcionario;
       string usuario[5];
+      string funcionario;
       Chave chave;
 
     public:
@@ -52,8 +52,6 @@ class Agenda: public Chave{
         string getUsuario(const int&);
 
         void imprimeAgenda();
-
-        friend ostream& operator <<(ostream&, const string&);
 
         friend ostream& operator <<(ostream&, const Agenda&);
 

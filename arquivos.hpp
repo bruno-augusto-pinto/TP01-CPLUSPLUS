@@ -5,7 +5,6 @@
 #include <vector>
 #include <experimental/filesystem> 
 #include <iterator>
-#include <algorithm>
 
 #include "usuario.hpp"
 #include "especialista.hpp"
@@ -20,25 +19,12 @@ void imprimeUsuarios(const string&);
 void imprimeFuncionarios(const string&, const bool&);
 void imprimeAgenda(const string&, const bool&);
 
-
 template <typename Objeto, typename Container>
 void setObjetos(const string& nome, Container& objetos){
-    ifstream in (nome.c_str());
-    Objeto temporario;
-    if(typeid(Objeto).name() == typeid(Agenda).name()){
-        while (!in.eof()){
-            Objeto temp;
-            if (!objetos.empty()) {
-                temp = objetos.back();
-            }
-            in >> temporario;
-            if (temp.getChave() == temporario.getChave()){
-                break;
-            }
-            objetos.push_back(temporario);
-        }
-    }
-    while(in >> temporario){
+    ifstream in (nome.c_str(), ios::binary);
+    while (in){
+        Objeto temporario;
+        in >> temporario;
         objetos.push_back(temporario);
     }
     in.close();
@@ -71,7 +57,7 @@ int verifica(Objeto objeto, const string& nome){
     existe(nome);
     Container objetos;
     setObjetos<Objeto, Container>(nome, objetos);
-    for (auto it : objetos) {
+    for (Objeto it : objetos) {
         if (it.getChave() == objeto.getChave()){
             return 1;
         }
