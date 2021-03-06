@@ -1,8 +1,6 @@
 #ifndef pessoa_hpp
 #define pessoa_hpp
 
-//#include <iostream>
-//#include <stdlib.h>
 #include "chave.hpp"
 
 using namespace std; 

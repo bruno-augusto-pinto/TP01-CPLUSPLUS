@@ -17,7 +17,7 @@ void existe(const string& nome){
 void imprimeUsuarios(const string& nome){
     existe(nome);
     cout << endl;
-    printf("|%12s|%14s|", "NOME ", "disponibilidade DE CONTA ");
+    printf("|%12s|%14s|", "NOME ", "TIPO DE CONTA ");
     cout << endl;
     ifstream in (nome.c_str());
     Usuario it;
@@ -49,7 +49,7 @@ void imprimeFuncionarios(const string& nome, const bool& admin){
     ifstream in (nome.c_str());
     Funcionario it;
     if (admin){
-        printf("|%12s|%10s|%14s|%10s|", "NOME ", "CPF", "disponibilidade DE CONTA", "CMOMD");
+        printf("|%12s|%10s|%14s|%10s|", "NOME ", "CPF", "TIPO DE CONTA", "CMOMD");
         cout << endl;
         while(in >> it){
             string tipo;

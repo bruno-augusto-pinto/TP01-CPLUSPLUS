@@ -315,6 +315,8 @@
             cout << endl << "(3) RECEPCIONISTA";
             cout << endl << "ESCOLHA: ";
             cin >> opc;
+            funcionario.setNome(nome);
+            funcionario.setCPF(cpf);
             switch (opc)
             {
                 case 1:
@@ -344,8 +346,6 @@
                 break;
             }
         }while(opc != 0);
-        funcionario.setNome(nome);
-        funcionario.setCPF(cpf);
         funcionario.setTipo(tipo);            
         if (verifica<Funcionario, vector<Funcionario>>(funcionario, arquivo)){
             cout << endl << "FUNCIONARIO JA CADASTRADO!" << endl;
@@ -490,6 +490,9 @@
                 agenda.setUsuario(usuario.getUsuario(), codigo);
                 agenda.setPaciente(paciente, codigo);
                 agenda.setDisponibilidade(false, codigo);
+                if (verifica<Agenda, vector<Agenda>>(agenda, arqAgenda)){
+                    remove<Agenda, vector<Agenda>>(agenda, arqAgenda);
+                }
                 registra<Agenda>(agenda, arqAgenda);
                 cout << endl << "CONSULTA AGENDADA COM SUCESSO!" << endl;
             }
@@ -533,10 +536,10 @@
                 agenda.setData(data);
                 agenda.setFuncionario(especialista.getChave());
                 agenda.setChave();
-                if (!verifica<Agenda, vector<Agenda>>(agenda, arqAgenda)){
+                if (verifica<Agenda, vector<Agenda>>(agenda, arqAgenda)){
                     agenda = getObjeto<Agenda, vector<Agenda>>(agenda, arqAgenda);
                 }
-                cout << endl << "AGENDA DE " << especialista.getCPF() << " NA DATA " << dia << "/" << mes << "/" << ano << ":" << endl;
+                cout << endl << "AGENDA DE " << especialista.getNome() << " NA DATA " << dia << "/" << mes << "/" << ano << ":" << endl;
                 agenda.imprimeAgenda();
                 return 1;
             }

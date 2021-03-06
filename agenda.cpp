@@ -56,7 +56,7 @@ string Agenda::getHorario(const int& codigo){
 }
 
 void Agenda::setChave(){
-  string chave = funcionario + std::to_string(data.getDia()) + std::to_string(data.getMes()) + std::to_string(data.getAno());
+  string chave = funcionario + ":" + std::to_string(data.getDia()) + "/" + std::to_string(data.getMes()) + "/" + std::to_string(data.getAno());
   this->chave.setChave(chave);
 }
 
@@ -88,12 +88,13 @@ void Agenda::imprimeAgenda(){
 }
 
 ostream& operator <<(ostream& out, const Agenda& agenda){
-  out << agenda.chave << "\n" << agenda.data << "\n" << agenda.funcionario << "\n";
+  out << agenda.chave << "\n" << agenda.data << "\n" << agenda.funcionario;
   for (int i = 0; i < 5; i++){
-    if (!agenda.disponibilidade[i]) {
-      out << agenda.codigo[i] << "\n" << "\n" << agenda.horario[i] << "\n";
-      out << agenda.disponibilidade[i] << "\n" << agenda.paciente[i];
-    }
+    //if (!agenda.disponibilidade[i]) {
+      out << "\n" << agenda.codigo[i] << "\n" << agenda.horario[i] << "\n";
+      out << agenda.disponibilidade[i] << "\n" << agenda.paciente[i] << "\n";
+      out << agenda.usuario[i];
+    //}
   }
   out << endl;
   return out;
@@ -104,12 +105,13 @@ istream& operator>>(istream& in, Agenda& agenda){
   in >> agenda.data; 
   in >> agenda.funcionario;
   for (int i = 0; i < 5; i++){
-    if (!agenda.disponibilidade[i]) {
+    //if (!agenda.disponibilidade[i]) {
       in >> agenda.codigo[i];
       in >> agenda.horario[i];
       in >> agenda.disponibilidade[i];
       in >> agenda.paciente[i];
-    }
+      in >> agenda.usuario[i];
+    //}
   }
   return in;
 }

@@ -22,16 +22,12 @@ string Especialista::getCPF(){
   return this->funcionario.getCPF();
 }
 
-/*void setChave(){
-
-}*/
-
 void Especialista::setChave(const string& chave){
-  this->CDOMD.setChave(chave);
+  this->funcionario.setChave(chave);
 }
 
 string Especialista::getChave(){
-  return this->CDOMD.getChave();
+  return this->funcionario.getChave();
 }
 
 
@@ -43,21 +39,20 @@ char Especialista::getTipo(){
   return this->funcionario.getTipo();
 }
 
-void Especialista::setAgenda(const Agenda& agenda){
+/*void Especialista::setAgenda(const Agenda& agenda){
   this->agenda = agenda;
 }
 
 Agenda Especialista::getAgenda(){
   return this->agenda;
-}
+}*/
 
 ostream& operator <<(ostream& out, const Especialista& especialista){
-  out <<  especialista.CDOMD << especialista.funcionario;
+  out << especialista.funcionario;
   return out;
 }
 
 istream& operator >>(istream& in, Especialista& especialista){
-  in >> especialista.CDOMD;
   in >> especialista.funcionario; 
   return in;
 }

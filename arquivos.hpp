@@ -5,10 +5,10 @@
 #include <vector>
 #include <experimental/filesystem> 
 #include <iterator>
-#include <string.h>
 
 #include "usuario.hpp"
 #include "especialista.hpp"
+#include "agenda.hpp"
 
 namespace fs = std::experimental::filesystem::v1;
 
@@ -25,6 +25,7 @@ void setObjetos(const string& nome, Container& objetos){
     ifstream in (nome.c_str());
     Objeto temporario;
     while(in >> temporario){
+        cout << endl << "TEMPORARIO: " << temporario << endl;
         objetos.push_back(temporario);
     }
     in.close();
@@ -58,7 +59,10 @@ int verifica(Objeto objeto, const string& nome){
     Container objetos;
     setObjetos<Objeto, Container>(nome, objetos);
     for (auto it : objetos) {
+        cout << endl << "CHAVE IT: " << it.getChave() << endl;
+        cout << endl << "CHAVE OBJETO: " << objeto.getChave() << endl;
         if (it.getChave() == objeto.getChave()){
+            cout << "agenda existe";
             return 1;
         }
     }
@@ -74,7 +78,6 @@ int remove(Objeto objeto, const string& nome){
         for (it = objetos.begin(); it != objetos.end(); ++it){
             if (it->getChave() == objeto.getChave()){
                 objetos.erase(it);
-                objetos.pop_back();
                 limpa(nome);
                 for (Objeto x : objetos){
                     registra<Objeto>(x, nome);

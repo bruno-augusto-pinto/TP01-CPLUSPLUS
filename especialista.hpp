@@ -2,16 +2,14 @@
 #define especialista_hpp
 
 #include "funcionario.hpp"
-#include "assistente.hpp"
-#include "agenda.hpp"
+//#include "assistente.hpp"
+//#include "agenda.hpp"
 
 using namespace std; 
 
 class Especialista: public Funcionario{
     private:
         Funcionario funcionario;
-        Agenda agenda;
-        Chave CDOMD;
         
     public:
         Especialista();
@@ -38,9 +36,9 @@ class Especialista: public Funcionario{
 
         string getChave();
 
-        void setAgenda(const Agenda&);
+        /*void setAgenda(const Agenda&);
 
-        Agenda getAgenda();
+        Agenda getAgenda();*/
 
         friend ostream& operator<<(ostream&, const Especialista&);
 
