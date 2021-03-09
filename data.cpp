@@ -31,7 +31,7 @@ int Data::getAno(){
 }
 
 ostream& operator <<(ostream& out, const Data& data){
-  out << data.dia << "/" << data.mes << "/" << data.ano;
+  out << data.dia << "\n" << data.mes << "\n" << data.ano;
   return out;
 }
 

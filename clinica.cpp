@@ -120,7 +120,7 @@
         if (verifica<Usuario, vector<Usuario>>(user, arquivo)){
             cout << endl << "USUARIO JA CADASTRADO!" << endl;
         }else{
-            registra<Usuario>(user, arquivo);
+            setFile<Usuario>(user, arquivo);
             cout << endl << "USUARIO CADASTRADO COM SUCESSO!" << endl;
         }
     }
@@ -213,7 +213,7 @@
         int opc = -1;
         cout << endl <<"MENU ADMINISTRATIVO DE FUNCIONARIOS";
         do {
-            cout << endl << "(1) REGISTRAR UM NOVO FUNCIONARIO" << endl << "(2) LISTAR FUNCIONARIOS";
+            cout << endl << "(1) setFileR UM NOVO FUNCIONARIO" << endl << "(2) LISTAR FUNCIONARIOS";
             cout << endl << "(3) ALTERAR DADOS DE UM FUNCIONARIO" << endl << "(4) REMOVER UM FUNCIONARIO";
             cout << endl << "(0) SAIR DO MENU" << endl << "ESCOLHA: ";
             cin >> opc;
@@ -356,11 +356,11 @@
                 if (verifica<Funcionario, vector<Funcionario>>(temp, arquivo)){
                     cout << endl << "FUNCIONARIO JA CADASTRADO!" << endl;
                 }else{
-                    registra<Funcionario>(funcionario, arquivo);
+                    setFile<Funcionario>(funcionario, arquivo);
                     cout << endl << "FUNCIONARIO CADASTRADO COM SUCESSO!" << endl;
                 }
             }else{
-                registra<Funcionario>(funcionario, arquivo);
+                setFile<Funcionario>(funcionario, arquivo);
                 cout << endl << "FUNCIONARIO CADASTRADO COM SUCESSO!" << endl;
             }
         }
@@ -426,7 +426,7 @@
         EXIT_SUCCESS;
     }
 
-    void Clinica::menuAgenda(const Usuario& usuario){
+    void Clinica::menuAgenda(Usuario usuario){
         string funcionario = "funcionarios.bin";
         string arqAgenda = "agenda.bin";
         int opc = -1;
@@ -442,19 +442,23 @@
             switch (opc) 
             {
                 case 1:
-                    setConsulta(funcionario, arqAgenda, usuario);
+                    setConsulta(funcionario, arqAgenda, usuario, "AGENDAR");
                 break;
 
                 case 2:
-                    listaAgenda(funcionario, arqAgenda);
+                    if (usuario.getTipo() == 'G'){
+                        listaAgenda(funcionario, arqAgenda, "LISTAR");
+                    }else{
+                        imprimeAgenda(arqAgenda);                      
+                    }
                 break;
 
                 case 3:
-
+                    setConsulta(funcionario, arqAgenda, usuario, "DESMARCAR");
                 break;
 
                 case 4:
-
+                    historico(arqAgenda, usuario);
                 break;
 
                 case 0:
@@ -467,17 +471,26 @@
         }while(opc != 0);
     }
 
-    void Clinica::setConsulta(const string& funcionario, const string& arqAgenda, Usuario usuario){
-        Agenda agenda = listaAgenda(funcionario, arqAgenda);
+    void Clinica::setConsulta(const string& funcionario, const string& arqAgenda, Usuario usuario, const string& operacao){
+        Agenda agenda = listaAgenda(funcionario, arqAgenda, operacao);
         int codigo;
         bool controle = false;
         do {
-            cout << endl << "INSIRA O CODIGO DO HORARIO EM QUE DESEJA FAZER A CONSULTA MO DIA " << agenda.getData() << ": ";
+            cout << endl << "INSIRA O CODIGO DO HORARIO PARA "<< operacao << "UMA CONSULTA MO DIA " << agenda.getData() << endl;
+            cout << "(9) CANCELAR" << endl << "ESCOLHA: ";
             cin >> codigo;
-            if (codigo < 0 || codigo > 4 || !agenda.getDisponibilidade(codigo)) {
-                cout << endl << "CODIGO INVALIDO! TENTE NOVAMENTE" << endl;
-            }else{
+            if(codigo == 9){
+                cout << endl << "OPERAÇÃO CANCELADA!";
                 controle = true;
+            }else if(codigo < 0 || codigo > 4) {
+                cout << endl << "CODIGO INVALIDO! TENTE NOVAMENTE" << endl;
+            }
+            else if (!agenda.getDisponibilidade(codigo) && operacao == "AGENDAR") 
+            {
+                cout << endl << "HORARIO JÁ FOI RESERVADO" << endl;
+            }else if (agenda.getDisponibilidade(codigo) && operacao == "DESMARCAR"){
+                cout << endl << "NÃO EXISTE CONSULTA MARCADA NESSE HORARIO";
+            }else if (operacao == "AGENDAR"){
                 string paciente;
                 cout << endl << "DIGITE O NOME DO PACIENTE: ";
                 cin >> paciente;
@@ -487,13 +500,28 @@
                 if (verifica<Agenda, vector<Agenda>>(agenda, arqAgenda)){
                     remove<Agenda, vector<Agenda>>(agenda, arqAgenda);
                 }
-                registra<Agenda>(agenda, arqAgenda);
+                setFile<Agenda>(agenda, arqAgenda);
+                //ordena<Agenda, vector<Agenda>>(arqAgenda);
                 cout << endl << "CONSULTA AGENDADA COM SUCESSO!" << endl;
-             }    
+                return;
+            }else{
+                if (usuario.getTipo() != 'G' || usuario.getUsuario() == agenda.getUsuario(codigo)){
+                    remove<Agenda, vector<Agenda>>(agenda, arqAgenda);
+                    agenda.setDisponibilidade(true, codigo);
+                    agenda.setPaciente("------", codigo);
+                    agenda.setUsuario("------", codigo);
+                    setFile<Agenda>(agenda, arqAgenda);
+                    //ordena<Agenda, vector<Agenda>>(arqAgenda);
+                    cout << endl << "CONSULTA CANCELADA COM SUCESSO!" << endl;
+                    return;
+                }
+                cout << endl << "ESSE USUARIO SO PODE DESMARCAR CONSULTAS QUE ELE MESMO MARCOU" << endl;
+                return;
+            }   
         }while(!controle);
     }
 
-    Agenda Clinica::listaAgenda(const string& funcionario, const string& arqAgenda){
+    Agenda Clinica::listaAgenda(const string& funcionario, const string& arqAgenda, const string& operacao){
         string chave;
         Especialista especialista;
         bool controle = false;
@@ -528,7 +556,7 @@
             cout << endl << "ESCOLHA UM DIA: ";
             cin >> dia;
             if (!comparaHora(dia, mes, ano)){
-                perror("ERRO! VOCÊ NÃO PODE AGENDAR UMA CONSULTA EM UM DIA QUE JÁ PASSOU!");
+                cout << "ERRO! VOCÊ NÃO PODE "<< operacao  << "UMA CONSULTA EM UM DIA QUE JÁ PASSOU!";
             }else{
                 controle = false;
             }
@@ -539,12 +567,27 @@
         temporaria.setChave();
         if (verifica<Agenda, vector<Agenda>>(temporaria, arqAgenda)){
             temporaria = getObjeto<Agenda, vector<Agenda>>(temporaria, arqAgenda);
+        }else if (operacao == "DESMARCAR"){
+            cout << endl << "NÃO EXISTEM CONSULTAS PARA ESSA DATA" << endl;
+            EXIT_FAILURE;
         }
         cout << endl << "AGENDA DE " << especialista.getNome() << " NA DATA " << temporaria.getData() << ":" << endl;
         temporaria.imprimeAgenda();
-        return temporaria;
+        return temporaria;    
     }
 
+    void Clinica::historico(const string& arqAgenda, Usuario usuario){
+        vector<Agenda> consultas;
+        getFile<Agenda, vector<Agenda>>(arqAgenda, consultas);
+        for (Agenda it : consultas){
+            for (int i = 0; i < 5; i++){
+                if (it.getUsuario(i) == usuario.getUsuario()){
+
+                }
+            }
+        }
+    }
+    
     void Clinica::opcoesdaConta(){
 
     }
@@ -556,7 +599,7 @@
             admin.setChave();
             fstream criar ("usuarios.bin", ios::app | ios::binary);
             criar.close();
-            registra<Usuario>(admin, (string)"usuarios.bin");
+            setFile<Usuario>(admin, (string)"usuarios.bin");
         }
 
         if(!fs::exists("funcionarios.bin"))

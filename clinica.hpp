@@ -23,7 +23,7 @@ class Clinica {
 
         void cadastro(bool, const string&);
 
-        void menuAdministrador(const Usuario& usuario);
+        void menuAdministrador(const Usuario&);
 
         void crudUsuario();
 
@@ -31,15 +31,19 @@ class Clinica {
 
         void registraFuncionario(const string&);
 
-        void menuAssistenteAdministrativo(const Usuario& usuario);
+        void menuAssistenteAdministrativo(const Usuario&);
 
-        void menuUsuarioGeral(const Usuario& usuario);
+        void menuUsuarioGeral(const Usuario&);
 
-        void menuAgenda(const Usuario& usuario);
+        void menuAgenda(Usuario);
 
-        void setConsulta(const string&, const string&, Usuario);
+        void setConsulta(const string&, const string&, Usuario, const string&);
 
-        Agenda listaAgenda(const string&, const string&);
+        Agenda listaAgenda(const string&, const string&, const string&);
+
+        void desmarca(const string&, const string&, Usuario);
+
+        void historico(const string&, Usuario);
 
         void opcoesdaConta();
 

@@ -5,6 +5,7 @@
 #include <vector>
 #include <experimental/filesystem> 
 #include <iterator>
+#include <algorithm>
 
 #include "usuario.hpp"
 #include "especialista.hpp"
@@ -17,21 +18,20 @@ void limpa(const string&);
 
 void imprimeUsuarios(const string&);
 void imprimeFuncionarios(const string&, const bool&);
-void imprimeAgenda(const string&, const bool&);
+void imprimeAgenda(const string&);
 
 template <typename Objeto, typename Container>
-void setObjetos(const string& nome, Container& objetos){
+void getFile(const string& nome, Container& objetos){
     ifstream in (nome.c_str(), ios::binary);
-    while (in){
-        Objeto temporario;
-        in >> temporario;
+    Objeto temporario;
+    while (in >> temporario){
         objetos.push_back(temporario);
     }
     in.close();
 }
 
 template <typename Objeto>
-void registra(const Objeto& objeto, const string& nome){
+void setFile(const Objeto& objeto, const string& nome){
     existe(nome);
     ofstream out (nome.c_str(), ios::app | ios::binary);
     out << objeto;
@@ -43,7 +43,7 @@ template <typename Objeto, typename Container>
 Objeto getObjeto(Objeto objeto, const string& nome){
     existe(nome);
     Container objetos;
-    setObjetos<Objeto, Container>(nome, objetos);
+    getFile<Objeto, Container>(nome, objetos);
     for (Objeto x : objetos){
         if (x.getChave() == objeto.getChave()){
             return x;
@@ -56,7 +56,7 @@ template <typename Objeto, typename Container>
 int verifica(Objeto objeto, const string& nome){
     existe(nome);
     Container objetos;
-    setObjetos<Objeto, Container>(nome, objetos);
+    getFile<Objeto, Container>(nome, objetos);
     for (Objeto it : objetos) {
         if (it.getChave() == objeto.getChave()){
             return 1;
@@ -69,19 +69,40 @@ template <typename Objeto, typename Container>
 int remove(Objeto objeto, const string& nome){
     existe(nome);
         Container objetos;
-        setObjetos<Objeto, Container>(nome, objetos);
+        getFile<Objeto, Container>(nome, objetos);
         typename Container::iterator it;
         for (it = objetos.begin(); it != objetos.end(); ++it){
             if (it->getChave() == objeto.getChave()){
                 objetos.erase(it);
                 limpa(nome);
                 for (Objeto x : objetos){
-                    registra<Objeto>(x, nome);
+                    //cout << endl << x << endl;
+                    setFile<Objeto>(x, nome);
                 }
                 return 1;
             }        
         }
     return 0;
 }
+
+// template <typename Objeto, typename Container>
+// void ordena(string nome){
+//     Container objetos;
+//     getFile<Objeto, Container>(nome, objetos);
+//     limpa(nome);
+//     vector<string> compara;
+//     for (auto x : objetos){
+//         compara.push_back(x.getChave());
+//     }
+//     std::sort(compara.begin(), compara.end());
+//     typename vector<string>::iterator it;
+//     for (it = compara.begin(); it != compara.end(); ++it){
+//         for (auto x : objetos){
+//             if (x.getChave() == *it){
+//                 setFile<Objeto>(x, nome);
+//             }
+//         }
+//     }
+// }
 
 #endif
