@@ -131,7 +131,7 @@
         cout << endl << "MENU DO ADMINISTRADOR";
         do {
             cout << endl << "(1) ADMINISTRAR USUARIOS" << endl << "(2) ADMNISTRAR FUNCIONARIOS"; 
-            cout << endl << "(3) AGENDA" << endl << "(4) FOLHA DE PONTO" << endl << "(0) SAIR" << endl << "ESCOLHA: ";
+            cout << endl << "(3) AGENDA" << endl << "(4) FOLHA DE PONTO" << endl << "(5) PAGAMENTOS" << endl << "(0) SAIR" << endl << "ESCOLHA: ";
             cin >> opc;
             switch (opc)
             {
@@ -149,6 +149,10 @@
 
                 case 4:
                     menuFolhadePonto();
+                break;
+
+                case 5:
+                    menuPagamentos(usuario);
                 break;
 
                 case 0:
@@ -376,7 +380,7 @@
         cout << endl << "MENU DO ASSISTENTE ADMINISTRADOR" << endl;
         do {
             cout << "(1) AGENDA" << endl << "(2) FOLHA DE PONTO"<< endl; 
-            cout << "(0) SAIR" << endl << "ESCOLHA: ";
+            cout << "(3) PAGAMENTOS" << endl << "(0) SAIR" << endl << "ESCOLHA: ";
             cin >> opc;
             switch (opc)
             {
@@ -386,6 +390,10 @@
 
                 case 2:
                     menuFolhadePonto();
+                break;
+
+                case 3:
+                    menuPagamentos(usuario);
                 break;
 
                 case 0:
@@ -487,6 +495,93 @@
         setFile<FolhadePonto>(ponto, arqPonto);
         cout << endl << "PONTO ADICIONADO COM SUCESSO!" << endl << endl;
         return;
+    }
+
+    void Clinica::menuPagamentos(const Usuario& usuario){
+        int opc = -1;
+        cout << endl << "MENU DE PAGAMENTOS" << endl;
+        do {
+            cout << "(1) ADICIONAR UM PAGAMENTO" << endl << "(2) LISTAR PAGAMENTOS"<< endl; 
+            cout << "(0) SAIR" << endl << "ESCOLHA: ";
+            cin >> opc;
+            switch (opc)
+            {
+                case 1:
+                   pagamentos(usuario, "pagamentos.bin");
+                break;
+
+                case 2:
+                    imprimePagamentos("pagamentos.bin");
+                break;
+
+                case 0:
+                    cout << endl << "FINALIZANDO SESSÃO.";
+                break;
+            
+                default:
+                    cout << endl << "OPÇÃO INVALIDA! TENTE NOVAMENTE." << endl;
+                break;
+            }
+        }while(opc != 0);
+        EXIT_SUCCESS;
+    }
+
+    void Clinica::pagamentos(Usuario usuario, const string& arqPagamentos){
+        Pagamento pagamento;
+        bool controle = false;
+        do {
+            int tipo;
+            cout << "INSIRA O TIPO DE PAGAMENTO: " << endl;
+            cout << "(1) AGUA" << endl;
+            cout << "(2) LUZ" << endl;
+            cout << "(3) ALUGUEL" << endl;
+            cout << "(4) TELEFONE" << endl;
+            cout << "(5) PRODUTOS DE LIMPEZA" << endl;
+            cout << "(6) MANUTENÇÃO DE EQUIPAMENTOS" << endl;
+            cout << "(7) MATERIAL DE ESCRITORIO" << endl;
+            cout << "(8) MATERIAL DE ATENDIMENTO" << endl;
+            cout << "ESCOLHA: ";
+            cin >> tipo;
+            if (tipo > 8 || tipo < 1){
+                cout << endl << "INVALIDO!" << endl;
+            }else{
+                pagamento.setTipo(tipo);
+                controle = true;
+            }
+        }while(!controle);
+        string descricao;
+        cout << "INSIRA A DESCRIÇÃO DO PAGAMENTO DE " << pagamento.getTipo() << ": ";
+        cin.ignore();
+        getline(cin, descricao);
+        int dia, mes, ano;
+        cout << "INSIRA A DATA DE VENCIMENTO DO PAGAMENTO DE " << pagamento.getTipo() << ": ";
+        cout << endl << "DIA: ";
+        cin >> dia;
+        cout << endl << "MES: ";
+        cin >> mes;
+        cout << endl << "ANO: "; 
+        cin >> ano;
+        Data data;
+        data.setDia(dia);
+        data.setMes(mes);
+        data.setAno(ano);
+        pagamento.setVencimento(data);
+        cout << "INSIRA A DATA DE PAGAMENTO DE " << pagamento.getTipo() << ": ";
+        cout << endl << "DIA: ";
+        cin >> dia;
+        cout << endl << "MES: ";
+        cin >> mes;
+        cout << endl << "ANO: "; 
+        cin >> ano;
+        data.setDia(dia);
+        data.setMes(mes);
+        data.setAno(ano);
+        pagamento.setPagamento(data);
+        pagamento.setUsuario(usuario.getUsuario());
+        pagamento.setDescricao(descricao);
+        pagamento.setChave();
+        setFile<Pagamento>(pagamento, arqPagamentos);
+        cout << endl << "PAGAMENTO ADICIONADO COM SUCESSO!" << endl << endl;
     }
 
     void Clinica::menuUsuarioGeral(const Usuario& usuario)

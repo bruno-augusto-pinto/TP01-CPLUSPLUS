@@ -37,6 +37,10 @@ class Clinica {
 
         void folhadePonto(const bool&);
 
+        void menuPagamentos(const Usuario&);
+
+        void pagamentos(Usuario, const string&);
+
         void menuUsuarioGeral(const Usuario&);
 
         void menuAgenda(Usuario);

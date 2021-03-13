@@ -1,13 +1,8 @@
 #ifndef agenda_hpp
 #define agenda_hpp
 
-#include <iostream>
-#include <stdlib.h>
-
 #include "data.hpp"
 #include "chave.hpp"
-
-using namespace std; 
 
 class Agenda: public Chave{
     private:

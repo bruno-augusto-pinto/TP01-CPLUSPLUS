@@ -127,3 +127,15 @@ void historico(const string& arqAgenda, Usuario usuario){
         }
     }
 }
+
+void imprimePagamentos(const string& arquivo){
+    vector<Pagamento> pagamentos;
+    getFile<Pagamento, vector<Pagamento>>(arquivo, pagamentos);
+    printf("|%12s|%12s|%12s|%20s|%12s|", "   TIPO   ", "VENCIMENTO", "PAGAMENTO", "DESCRICAO", "QUEM EFETUOU");
+    cout << endl;
+    for (Pagamento it : pagamentos){
+        printf("|%12s|%12s|%12s|%20s|%12s|", it.getTipo().c_str(), it.getVencimento().printData().c_str(), it.getPagamento().printData().c_str(), it.getDescricao().c_str(), it.getUsuario().c_str());
+        cout << endl;
+    }
+    cout << endl;
+}

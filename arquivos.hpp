@@ -2,7 +2,6 @@
 #define arquivos_hpp
 
 #include <fstream>
-#include <vector>
 #include <experimental/filesystem> 
 #include <iterator>
 #include <algorithm>
@@ -11,6 +10,7 @@
 #include "especialista.hpp"
 #include "agenda.hpp"
 #include "folhadeponto.hpp"
+#include "pagamento.hpp"
 
 namespace fs = std::experimental::filesystem::v1;
 
@@ -20,6 +20,7 @@ void limpa(const string&);
 void imprimeUsuarios(const string&);
 void imprimeFuncionarios(const string&, const bool&);
 void imprimeAgenda(const string&);
+void imprimePagamentos(const string&);
 
 void historico(const string& arqAgenda, Usuario usuario);
 
