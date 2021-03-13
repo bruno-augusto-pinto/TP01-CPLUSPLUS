@@ -30,6 +30,11 @@ int Data::getAno(){
   return this->ano;
 }
 
+string Data::printData(){
+  string dataFormatada = std::to_string(dia) + "/" + std::to_string(mes) + "/" + std::to_string(ano);
+  return dataFormatada;
+}
+
 ostream& operator <<(ostream& out, const Data& data){
   out << data.dia << "\n" << data.mes << "\n" << data.ano;
   return out;

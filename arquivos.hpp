@@ -10,6 +10,7 @@
 #include "usuario.hpp"
 #include "especialista.hpp"
 #include "agenda.hpp"
+#include "folhadeponto.hpp"
 
 namespace fs = std::experimental::filesystem::v1;
 
@@ -19,6 +20,8 @@ void limpa(const string&);
 void imprimeUsuarios(const string&);
 void imprimeFuncionarios(const string&, const bool&);
 void imprimeAgenda(const string&);
+
+void historico(const string& arqAgenda, Usuario usuario);
 
 template <typename Objeto, typename Container>
 void getFile(const string& nome, Container& objetos){
@@ -76,7 +79,6 @@ int remove(Objeto objeto, const string& nome){
                 objetos.erase(it);
                 limpa(nome);
                 for (Objeto x : objetos){
-                    //cout << endl << x << endl;
                     setFile<Objeto>(x, nome);
                 }
                 return 1;

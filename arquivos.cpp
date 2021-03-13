@@ -113,3 +113,17 @@ void imprimeAgenda(const string& nome){
     }
     in.close(); 
 }
+
+void historico(const string& arqAgenda, Usuario usuario){
+    vector<Agenda> consultas;
+    getFile<Agenda, vector<Agenda>>(arqAgenda, consultas);
+    printf("|%12s|%12s|%10s|%14s|", "DENTISTA", "DATA", "HORARIO", "PACIENTE");
+    for (Agenda it : consultas){
+        for (int i = 0; i < 5; i++){
+            if (it.getUsuario(i) == usuario.getUsuario()){
+                printf("|%12s|%12s|%10s|%14s|", it.getFuncionario().c_str(), it.printData().c_str(), it.getHorario(i).c_str(), it.getPaciente(i).c_str());
+                cout << endl;
+            }
+        }
+    }
+}

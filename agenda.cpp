@@ -35,6 +35,11 @@ Data Agenda::getData(){
   return this->data;
 }
 
+string Agenda::printData(){
+  string dataFormatada = std::to_string(data.getDia()) + "/" + std::to_string(data.getMes()) + "/" + std::to_string(data.getAno());
+  return dataFormatada;
+}
+
 void Agenda::setDisponibilidade(const bool& disponibilidade, const int& codigo){
   this->disponibilidade[codigo] = disponibilidade;
 }
@@ -45,6 +50,10 @@ void Agenda::setPaciente(const string& paciente, const int& codigo){
 
 void Agenda::setFuncionario(const string& funcionario){
   this->funcionario = funcionario;
+}
+
+string Agenda::getFuncionario(){
+  return this->funcionario;
 }
 
 string Agenda::getPaciente(const int& codigo){

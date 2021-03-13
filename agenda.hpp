@@ -31,6 +31,8 @@ class Agenda: public Chave{
 
         Data getData();
 
+        string printData();
+
         void setDisponibilidade(const bool&, const int&);
 
         void setPaciente(const string&, const int&);
@@ -38,6 +40,8 @@ class Agenda: public Chave{
         string getPaciente(const int&);
 
         void setFuncionario(const string&);
+
+        string getFuncionario();
 
         bool getDisponibilidade(const int&);
 

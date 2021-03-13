@@ -33,6 +33,10 @@ class Clinica {
 
         void menuAssistenteAdministrativo(const Usuario&);
 
+        void menuFolhadePonto();
+
+        void folhadePonto(const bool&);
+
         void menuUsuarioGeral(const Usuario&);
 
         void menuAgenda(Usuario);
@@ -40,10 +44,6 @@ class Clinica {
         void setConsulta(const string&, const string&, Usuario, const string&);
 
         Agenda listaAgenda(const string&, const string&, const string&);
-
-        void desmarca(const string&, const string&, Usuario);
-
-        void historico(const string&, Usuario);
 
         void opcoesdaConta();
 

@@ -131,20 +131,24 @@
         cout << endl << "MENU DO ADMINISTRADOR";
         do {
             cout << endl << "(1) ADMINISTRAR USUARIOS" << endl << "(2) ADMNISTRAR FUNCIONARIOS"; 
-            cout << endl << "(3) AGENDA" << endl << "(0) SAIR" << endl << "ESCOLHA: ";
+            cout << endl << "(3) AGENDA" << endl << "(4) FOLHA DE PONTO" << endl << "(0) SAIR" << endl << "ESCOLHA: ";
             cin >> opc;
             switch (opc)
             {
                 case 1:
-                    this->crudUsuario();
+                    crudUsuario();
                 break;
 
                 case 2:
-                    this->crudFuncionario();
+                    crudFuncionario();
                 break;
 
                 case 3:
                     menuAgenda(usuario);
+                break;
+
+                case 4:
+                    menuFolhadePonto();
                 break;
 
                 case 0:
@@ -371,7 +375,7 @@
         int opc = -1;
         cout << endl << "MENU DO ASSISTENTE ADMINISTRADOR" << endl;
         do {
-            cout << "(1) AGENDA" << endl << "(2) "<< endl; 
+            cout << "(1) AGENDA" << endl << "(2) FOLHA DE PONTO"<< endl; 
             cout << "(0) SAIR" << endl << "ESCOLHA: ";
             cin >> opc;
             switch (opc)
@@ -381,7 +385,7 @@
                 break;
 
                 case 2:
-                    
+                    menuFolhadePonto();
                 break;
 
                 case 0:
@@ -394,6 +398,95 @@
             }
         }while(opc != 0);
         EXIT_SUCCESS;
+    }
+
+    void Clinica::menuFolhadePonto(){
+        int opc = -1;
+        cout << endl << "MENU DA FOLHA DE PONTO" << endl;
+        do {
+            cout << "(1) ADICIONAR PONTO NA FOLHA" << endl << "(2) LISTAR FOLHA"<< endl; 
+            cout << "(0) SAIR" << endl << "ESCOLHA: ";
+            cin >> opc;
+            switch (opc)
+            {
+                case 1:
+                    folhadePonto(true);
+                break;
+
+                case 2:
+                    folhadePonto(false);
+                break;
+
+                case 0:
+                    cout << endl << "FINALIZANDO SESSÃO.";
+                break;
+            
+                default:
+                    cout << endl << "OPÇÃO INVALIDA! TENTE NOVAMENTE." << endl;
+                break;
+            }
+        }while(opc != 0);
+        EXIT_SUCCESS;
+    }
+
+    void Clinica::folhadePonto(const bool& opc){
+        const string arqFuncionarios = "funcionarios.bin";
+        imprimeFuncionarios(arqFuncionarios, true);
+        string chave;
+        Funcionario funcionario;
+        bool controle = false;
+        do{
+            cout << "INSIRA O CPF DO FUNCIONARIO" << endl << "OU CMOMD CASO ESPECIALISTA: ";
+            cin >> chave;
+            funcionario.setChave(chave);
+            if (verifica<Funcionario, vector<Funcionario>>(funcionario, arqFuncionarios)){
+                funcionario = getObjeto<Funcionario, vector<Funcionario>>(funcionario, arqFuncionarios);
+                controle = true;
+            }else{
+                cout << endl << "FUNCIONARIO PESQUISADO NÃO EXISTE!" << endl;
+            }
+        }while(!controle);
+        FolhadePonto ponto;
+        ponto.setChave(chave);
+        const string arqPonto = "folhadeponto.bin";
+        if (verifica<FolhadePonto, vector<FolhadePonto>>(ponto, arqPonto)){
+            ponto = getObjeto<FolhadePonto, vector<FolhadePonto>>(ponto, arqPonto);
+        }
+        ponto.imprimePonto();
+        if (!opc){
+            return;
+        }
+        Data data;
+        do {
+            int dia, mes, ano;
+            cout << endl << "INSIRA O DIA: ";
+            cin >> dia;
+            cout << endl << "INSIRA O MES: ";
+            cin >> mes;
+            cout << endl << "INSIRA O ANO: ";
+            cin >> ano;
+            data.setDia(dia);
+            data.setMes(mes);
+            data.setAno(ano);
+            if (!ponto.checkData(data)){
+                cout << endl << "DATA INVALIDA!" << endl;
+            }else{
+                controle = false;
+            }
+        }while(controle);
+        string observacao;
+        cout << endl <<  "INSIRA UMA OBSERVAÇÃO: " << endl;
+        cin.ignore();
+        getline(cin, observacao);
+        ponto.setData(data);
+        ponto.setObservacao(observacao);
+        if (verifica<FolhadePonto, vector<FolhadePonto>>(ponto, arqPonto)){
+            remove<FolhadePonto, vector<FolhadePonto>>(ponto, arqPonto);
+        }
+        ponto.setTamanho();
+        setFile<FolhadePonto>(ponto, arqPonto);
+        cout << endl << "PONTO ADICIONADO COM SUCESSO!" << endl << endl;
+        return;
     }
 
     void Clinica::menuUsuarioGeral(const Usuario& usuario)
@@ -476,7 +569,7 @@
         int codigo;
         bool controle = false;
         do {
-            cout << endl << "INSIRA O CODIGO DO HORARIO PARA "<< operacao << "UMA CONSULTA MO DIA " << agenda.getData() << endl;
+            cout << endl << "INSIRA O CODIGO DO HORARIO PARA "<< operacao << "UMA CONSULTA MO DIA " << agenda.printData() << endl;
             cout << "(9) CANCELAR" << endl << "ESCOLHA: ";
             cin >> codigo;
             if(codigo == 9){
@@ -565,27 +658,16 @@
         Agenda temporaria(dia, mes, ano);
         temporaria.setFuncionario(especialista.getChave());
         temporaria.setChave();
+        temporaria.setFuncionario(especialista.getNome());
         if (verifica<Agenda, vector<Agenda>>(temporaria, arqAgenda)){
             temporaria = getObjeto<Agenda, vector<Agenda>>(temporaria, arqAgenda);
         }else if (operacao == "DESMARCAR"){
             cout << endl << "NÃO EXISTEM CONSULTAS PARA ESSA DATA" << endl;
             EXIT_FAILURE;
         }
-        cout << endl << "AGENDA DE " << especialista.getNome() << " NA DATA " << temporaria.getData() << ":" << endl;
+        cout << endl << "AGENDA DE " << especialista.getNome() << " NA DATA " << temporaria.printData() << ":" << endl;
         temporaria.imprimeAgenda();
         return temporaria;    
-    }
-
-    void Clinica::historico(const string& arqAgenda, Usuario usuario){
-        vector<Agenda> consultas;
-        getFile<Agenda, vector<Agenda>>(arqAgenda, consultas);
-        for (Agenda it : consultas){
-            for (int i = 0; i < 5; i++){
-                if (it.getUsuario(i) == usuario.getUsuario()){
-
-                }
-            }
-        }
     }
     
     void Clinica::opcoesdaConta(){
@@ -611,6 +693,12 @@
         if(!fs::exists("agenda.bin"))
         {
             fstream criar ("agenda.bin", ios::app | ios::binary);
+            criar.close();
+        }
+
+        if(!fs::exists("folhadeponto.bin"))
+        {
+            fstream criar ("folhadeponto.bin", ios::app | ios::binary);
             criar.close();
         }
     }

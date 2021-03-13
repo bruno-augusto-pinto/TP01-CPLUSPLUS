@@ -32,6 +32,8 @@ class Data{
 
         int getAno();
 
+        string printData();
+
         friend ostream& operator <<(ostream&, const Data&);
 
         friend istream& operator >>(istream&, Data&);
