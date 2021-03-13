@@ -19,11 +19,14 @@ pelo sistema.
 
 ## *Desenvolvido por:*
 
+[@Roniela](https://github.com/Roniela070811)
+
 [@Arnaldo Dias](https://github.com/Arnaldias)
 
 [@Bruno Pinto](https://github.com/bruno-augusto-pinto)
 
 [@Dostoievsky](https://github.com/dostoievsky)
+
 
 
 

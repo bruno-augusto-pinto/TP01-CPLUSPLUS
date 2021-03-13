@@ -701,4 +701,10 @@
             fstream criar ("folhadeponto.bin", ios::app | ios::binary);
             criar.close();
         }
+
+        if(!fs::exists("pagamentos.bin"))
+        {
+            fstream criar ("pagamentos.bin", ios::app | ios::binary);
+            criar.close();
+        }
     }

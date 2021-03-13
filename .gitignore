@@ -1,4 +1,5 @@
 .vscode
+.gitignore
 
 TrabalhoPraticoI(1).pdf
 
@@ -6,5 +7,6 @@ usuarios.bin
 funcionarios.bin
 agenda.bin
 folhadeponto.bin
+pagamentos.bin
 
 PROGRAMA
