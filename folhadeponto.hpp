@@ -1,9 +1,9 @@
 #ifndef folhadeponto_hpp
 #define folhadeponto_hpp
 
-//#include <algorithm> 
 #include "chave.hpp"
-#include "data.hpp" 
+#include "data.hpp"
+#include "vector" 
 
 class FolhadePonto: public Chave{
     private:
