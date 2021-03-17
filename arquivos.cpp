@@ -1,11 +1,15 @@
 #include "arquivos.hpp"
 
+//FUNÇÃO QUE REMOVE UM ARQUIVO
+//DO DIRETORIO
 void limpa(const string& nome){
     remove(nome.c_str());
     ofstream recria (nome.c_str(), ios::app);
     recria.close();
 }
 
+//FUNÇÃO QUE VERIFICA A EXISTENCIA DE UM
+//ARQUIVO
 void existe(const string& nome){
     if(!fs::exists(nome.c_str()))
     {
@@ -14,6 +18,7 @@ void existe(const string& nome){
     }  
 }
 
+//FUNÇÃO QUE LISTA TABELA DE USUARIOS
 void imprimeUsuarios(const string& nome){
     existe(nome);
     cout << endl;
@@ -43,6 +48,11 @@ void imprimeUsuarios(const string& nome){
     in.close();
 }
 
+//FUNÇÃO QUE LISTA TABELAS DE FUNCIONARIOS
+//ATRAVÉS DO BOOLEANO, PERMITE QUE
+//ADMINISTRADORES VEJAM TODOS OS DADOS
+//E USUARIOS GERAIS VEJAM APENAS O NOME E A CHAVE
+//DOS ESPECIALISTAS
 void imprimeFuncionarios(const string& nome, const bool& admin){
     existe(nome);
     cout << endl;
@@ -90,6 +100,8 @@ void imprimeFuncionarios(const string& nome, const bool& admin){
     in.close();   
 }
 
+//FUNÇÃO QUE IMPRIME UM DIA DA AGENDA
+//DE UM ESPECIALISTA
 void imprimeAgenda(const string& nome){
     existe(nome);
     cout << endl;
@@ -114,6 +126,9 @@ void imprimeAgenda(const string& nome){
     in.close(); 
 }
 
+//FUNÇÃO QUE IMPRIME O HISTORICO DE CONSULTAS DE UM 
+//USUARIO, FALTOU IMPLEMENTAR A OPÇÃO DE UM ADMINSTRADOR
+//ACESSAR QUALQUER AGENDA
 void historico(const string& arqAgenda, Usuario usuario){
     vector<Agenda> consultas;
     getFile<Agenda, vector<Agenda>>(arqAgenda, consultas);
@@ -128,6 +143,8 @@ void historico(const string& arqAgenda, Usuario usuario){
     }
 }
 
+//FUNÇÃO QUE IMPRIME LISTA DE PAGAMENTOS
+//REGISTRADOS PELO SISTEMA
 void imprimePagamentos(const string& arquivo){
     vector<Pagamento> pagamentos;
     getFile<Pagamento, vector<Pagamento>>(arquivo, pagamentos);

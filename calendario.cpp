@@ -12,10 +12,15 @@ int Calendario::numerodoDia(int dia, int mes, int ano){
   return (ano+ano/4 - ano/100 + ano/400 + t[mes-1]+dia) % 7;
 }
 
+//FUNÇÃO QUE RETORNA NOME DO MES
+//ATRAVÉS DE SEU NUMERO
 string Calendario::getNomeMes(int mes){
   return this->mes[mes];
 }
 
+//FUNÇÃO QUE RETORNA A QUANTIDADE DE
+//DIAS DE UM MES, TAMBÉM IDENTIFICA
+//DIAS DE ANOS BISEXTOS
 int Calendario::numerodeDias(int mes, int ano){
   if (mes == 2 && ano % 400 == 0 ){
     return this->totaldeDias[1];
@@ -28,6 +33,8 @@ int Calendario::numerodeDias(int mes, int ano){
   return this->totaldeDias[2];
 }
 
+//FUNÇÃO QUE IMPRIME CALENDARIO DO ANO
+//TODO, NÃO UTILIZADA NO TRABALHO
 void Calendario::imprimeCalendario(int ano){
   printf ("         Calendario - %d\n\n", ano); 
   //int dias;
@@ -66,6 +73,8 @@ void Calendario::imprimeCalendario(int ano){
   }
 }
 
+//FUNÇÃO QUE IMPRIME UM DETERMINADO MES 
+//PARA CONSULTA DE AGENDA
 void Calendario::imprimeMes(int ano, int mes){
    printf ("\n         Calendario - %d\n", ano); 
   //int dias;
@@ -116,6 +125,9 @@ void Calendario::imprimeMes(int ano, int mes){
   }
 }
 
+//FUNÇÃO QUE COMPARA SE O DIA DO SISTEMA
+//É ANTERIOR OU POSTERIOR AO DIA REQUISITADO
+//PELO USUARIO
 int comparaHora(int dia, int mes, int ano){
   time_t hoje;
   struct tm * hojeinfo;
@@ -127,6 +139,7 @@ int comparaHora(int dia, int mes, int ano){
   return 1;
 }
 
+//FUNÇÃO QUE RETORNA O ANO ATUAL DO SISTEMA
 int getAnoAtual(){
   time_t hoje;
   struct tm * hojeinfo;

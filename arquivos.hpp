@@ -14,16 +14,17 @@
 
 namespace fs = std::experimental::filesystem::v1;
 
+//CHAMADA DE FUNÇÕES NÃO GENERICAS
 void existe(const string&);
 void limpa(const string&);
-
 void imprimeUsuarios(const string&);
 void imprimeFuncionarios(const string&, const bool&);
 void imprimeAgenda(const string&);
 void imprimePagamentos(const string&);
-
 void historico(const string& arqAgenda, Usuario usuario);
 
+//FUNÇÃO GENERICA QUE RECEBE UM CONTAINER DE DADOS
+//DE UM DETERMINADO ARQUIVO 
 template <typename Objeto, typename Container>
 void getFile(const string& nome, Container& objetos){
     ifstream in (nome.c_str(), ios::binary);
@@ -34,6 +35,8 @@ void getFile(const string& nome, Container& objetos){
     in.close();
 }
 
+//FUNÇÃO GENERICA QUE INSERE UM DADO EM
+//UM DETERMINADO ARQUIVO
 template <typename Objeto>
 void setFile(const Objeto& objeto, const string& nome){
     existe(nome);
@@ -43,6 +46,9 @@ void setFile(const Objeto& objeto, const string& nome){
     out.close();
 }
 
+//FUNÇÃO GENERICA QUE RETORNA UM OBJETO
+//DE UM ARQUIVO ATRAVÉS DA COMPARAÇÃO
+//DE SUA CHAVE UNICA
 template <typename Objeto, typename Container>
 Objeto getObjeto(Objeto objeto, const string& nome){
     existe(nome);
@@ -56,6 +62,9 @@ Objeto getObjeto(Objeto objeto, const string& nome){
     return objeto;
 }
 
+//FUNÇÃO QUE VERIFICA A EXISTENCIA DE UM
+//OBJETO ATRAVÉS DA COMPARAÇÃO DE SUA CHAVE 
+//UNICA
 template <typename Objeto, typename Container>
 int verifica(Objeto objeto, const string& nome){
     existe(nome);
@@ -69,6 +78,9 @@ int verifica(Objeto objeto, const string& nome){
     return 0;
 }
 
+//FUNÇÃO QUE REMOVE UM OBJETO ATRAVÉS
+//DE COMPARAÇÃO DE SUA CHAVE UNICA
+//E REESCREVE OS DADOS NO ARQUIVO
 template <typename Objeto, typename Container>
 int remove(Objeto objeto, const string& nome){
     existe(nome);
@@ -88,6 +100,8 @@ int remove(Objeto objeto, const string& nome){
     return 0;
 }
 
+//FUNÇÃO NÃO IMPLEMENTADA QUE DEVERIA ORDENAR
+//OBJETOS EM ORDEM CRESCENTE
 // template <typename Objeto, typename Container>
 // void ordena(string nome){
 //     Container objetos;

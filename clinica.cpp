@@ -6,35 +6,48 @@
 
     int main(void)
     {
+        //CRIAÇÃO DO OBJETO CLINICA
         Clinica principal;
+        //VALIÇÃO DE EXISTENCIA DE ARQUIVOS,
+        //SE NÃO EXISTEM, SÃO CRIADOS,
+        //SE EXISTEM, PERMANECEM
         principal.setFiles();
+        //COUT DE BOAS VINDAS
         cout << "BEM VINDO AO SISTEMA CLINICO-OTODONTARIO." << endl;
+        //CHAMADA DO MENU PRINCIPAL
         principal.menuPrincipal();
+        //FIM DE EXECUÇÃO COM SUCESSO
         EXIT_SUCCESS;
     }
 
     void Clinica::menuPrincipal()
     {
+        //CRIAÇÃO DE VARIAVEL DE OPÇÃO
         int opc = -1;
         do 
         {
+            //MENU DE ESCOLHAS
             cout << endl << "MENU PRINCIPAL: " << endl << "(1) LOGIN" << endl << "(2) REGISTRO" << endl << "(0) FINALIZAR" << endl << "ESCOLHA: ";
             cin >> opc;
             switch (opc)
             {
                 case 1:
+                    //CASO DE LOGIN
                     this->login("usuarios.bin");
                 break;
 
                 case 2:
+                    //CASO DE CADASTRO
                     this->cadastro(false, "usuarios.bin"); 
                 break;
 
                 case 0:
+                    //CASO DE FIM DE EXECUÇÃO
                     cout << endl << "FINALIZANDO A EXECUÇÃO.";
                 break;
             
                 default:
+                    //CASO DE OPÇÃO INVALIDA
                     cout << endl << "OPÇÃO INVALIDA! TENTE NOVAMENTE." << endl;
                 break;
             }
@@ -44,6 +57,7 @@
 
     void Clinica::login(const string& arquivo)
     {
+        //VARIAVEIS DE USUARIO PARA VERIFICAÇÃO E LOGIN
         string usuario;
         string senha;
         cout << endl << "INSIRA O USUARIO: ";
@@ -52,13 +66,17 @@
         cin >> senha;
         Usuario user(usuario, senha, '0');
         user.setChave();
+        //VERIFICAÇÃO DA EXISTENCIA DE USUARIO NO ARQUIVO
         if (!verifica<Usuario, vector<Usuario>>(user, arquivo)){
             cout << endl << "USUARIO OU SENHA INVALIDOS!" << endl;
         }else{
+            //CASO EXISTA, RECEBE O USUARIO E 
+            //VERIFICA A SENHA
             Usuario temp = getObjeto<Usuario, vector<Usuario>>(user, arquivo);
             if (temp.getSenha() == user.getSenha()){
                 user = temp;
                 temp.~Usuario();
+                //CASO VALIDO, EFETUA LOGIN ATRAVÉS DO TIPO
                 switch (user.getTipo()) {
                     case 'A':
                         this->menuAdministrador(user);
@@ -78,8 +96,12 @@
         }
     }
 
+    //ATRAVÉZ DO BOOL ADMIN, A FUNÇÃO CADASTRO CADASTRA APENAS
+    //USUARIOS GERAIS, QUANDO FALSO E POSSIBILITA O CADASTRO
+    //DE DEMAIS USUARIOS QUANDO VERDADEIRA
     void Clinica::cadastro(bool admin, const string& arquivo)
     {
+        //VARIAVEIS PARA CADASTRO
         string usuario;
         string senha;
         char tipo;
@@ -117,6 +139,7 @@
         }
         Usuario user(usuario, senha, tipo);
         user.setChave();
+        //SE USUARIO JÁ EXISTE NO ARQUIVO, NÃO POSSIBILITA O SEU CADASTRO
         if (verifica<Usuario, vector<Usuario>>(user, arquivo)){
             cout << endl << "USUARIO JA CADASTRADO!" << endl;
         }else{
@@ -125,6 +148,9 @@
         }
     }
 
+    //COMO O FUNCIONAMENTO DOS MENUS JÁ FOI DESCRITO
+    //NÃO COMENTAREMOS OS DEMAIS MENUS POR TEREM
+    //ARQUITETURA E COMPORTAMENTO SEMELHANTE
     void Clinica::menuAdministrador(const Usuario& usuario)
     {
         int opc = -1;
@@ -167,6 +193,10 @@
         EXIT_SUCCESS;
     }
 
+    //CRUD DE CADASTRO DE USUARIOS
+    //SUA ARQUITETURA JÁ É CONHECIDA
+    //E OPTAMOS POR NÃO DESCREVER
+    //SEU COMPORTAMENTO
     void Clinica::crudUsuario()
     {
         int opc = -1;
@@ -306,6 +336,11 @@
         }while(opc != 0);        
     }
 
+    //FUNÇÃO DE REGISTRO DE FUNCIONARIOS
+    //SEMELHANTE A CADASTRO DE USUARIOS
+    //COM UMA VALIDAÇÃO EXTRA PARA 
+    //ESPECIALISTAS POIS SUA CHAVE
+    //DIFERE DAS DOIS DEMAIS FUNCIONARIOS
     void Clinica::registraFuncionario(const string& arquivo){
         string nome;
         string cpf;
@@ -437,12 +472,17 @@
         EXIT_SUCCESS;
     }
 
+    //REGISTRA UM PONTO DE UM FUNCIONARIO
     void Clinica::folhadePonto(const bool& opc){
+        //DECLARAÇÃO DE ARQUIVO DE FUNCIONARIOS
         const string arqFuncionarios = "funcionarios.bin";
+        //FUNÇÃO DE IMPRESSÃO DE FUNCIONARIOS
+        //PARA DISPONIBILIZAR SUAS CHAVES
         imprimeFuncionarios(arqFuncionarios, true);
         string chave;
         Funcionario funcionario;
         bool controle = false;
+        //SEQUENCIA DE VALIDAÇÃO DE CHAVE DO FUNCIONARIO
         do{
             cout << "INSIRA O CPF DO FUNCIONARIO" << endl << "OU CMOMD CASO ESPECIALISTA: ";
             cin >> chave;
@@ -454,17 +494,26 @@
                 cout << endl << "FUNCIONARIO PESQUISADO NÃO EXISTE!" << endl;
             }
         }while(!controle);
+        //CRIAÇÃO DO PONTO
         FolhadePonto ponto;
         ponto.setChave(chave);
         const string arqPonto = "folhadeponto.bin";
+        //VERIFICA SE O PONTO DO FUNCIONARIO JÁ EXISTE NO ARQUIVO
         if (verifica<FolhadePonto, vector<FolhadePonto>>(ponto, arqPonto)){
+            //SE EXISTE, O PONTO CRIADO RECEBE O PONTO NO ARQUIVO
+            //PARA INSERÇÃO DE NOVOS DADOS
             ponto = getObjeto<FolhadePonto, vector<FolhadePonto>>(ponto, arqPonto);
         }
+        //IMPRIME O PONTO PARA VIZUALIZAÇÃO
         ponto.imprimePonto();
         if (!opc){
+            //CASO A OPÇÃO SEJA FALSA, INDICA QUE ESSA FUNÇÃO
+            //FOI CHAMADA APENAS PARA IMPRESSÃO, ENTÃO
+            //RETORNAMOS AO MENU DE PONTO
             return;
         }
         Data data;
+        //INSERÇÃO DE DADOS PARA PONTO
         do {
             int dia, mes, ano;
             cout << endl << "INSIRA O DIA: ";
@@ -489,9 +538,14 @@
         ponto.setData(data);
         ponto.setObservacao(observacao);
         if (verifica<FolhadePonto, vector<FolhadePonto>>(ponto, arqPonto)){
+            //SE O PONTO EXISTE NO ARQUIVO, E JÁ ESTÁ CARREGADO NA MEMORIA,
+            //REMOVEMOS O PONTO DO ARQUIVO, QUE CONTEM OS DADOS NÃO ATUALIZADOS
             remove<FolhadePonto, vector<FolhadePonto>>(ponto, arqPonto);
         }
+        //O TAMANHO DO PONTO RECEBE +1 PARA QUE POSSAMOS 
+        //CAMINHAR OS DADOS NO ARQUIVO
         ponto.setTamanho();
+        //INSERIMOS O PONTO NO ARQUIVO
         setFile<FolhadePonto>(ponto, arqPonto);
         cout << endl << "PONTO ADICIONADO COM SUCESSO!" << endl << endl;
         return;
@@ -526,6 +580,9 @@
         EXIT_SUCCESS;
     }
 
+    //SEGUE BASICAMENTE A MESMA LOGICA DESCRITA EM PONTO
+    //SEM VERIFICAÇÕES MUITO COMPLEXAS E MESMA OPERAÇÃO
+    //DE ATUALIZAÇÃO/CRIAÇÃO EM ARQUIVO
     void Clinica::pagamentos(Usuario usuario, const string& arqPagamentos){
         Pagamento pagamento;
         bool controle = false;
@@ -659,6 +716,11 @@
         }while(opc != 0);
     }
 
+    //SEGUE A MESMA LOGICA DAS OUTRAS FUNÇÕES, POREM, PERMITE OPERAÇÕES DE
+    //EXCLUSÃO/ADIÇÃO ATRAVÉS DA STRING DE OPERAÇÃO E TAMBÉM VERIFICA QUE
+    //EM CASO DE EXCLUSÃO, APENAS USUARIOS DE TIPO MAIOR QUE GERAL POSSAM
+    //DELETAR QUALQUER CONSULTA, E USUARIOS DE TIPO GERAL POSSAM DELETAR
+    //APENAS CONSULTAS MARCADAS POR ELES MESMOS. 
     void Clinica::setConsulta(const string& funcionario, const string& arqAgenda, Usuario usuario, const string& operacao){
         Agenda agenda = listaAgenda(funcionario, arqAgenda, operacao);
         int codigo;
@@ -689,7 +751,6 @@
                     remove<Agenda, vector<Agenda>>(agenda, arqAgenda);
                 }
                 setFile<Agenda>(agenda, arqAgenda);
-                //ordena<Agenda, vector<Agenda>>(arqAgenda);
                 cout << endl << "CONSULTA AGENDADA COM SUCESSO!" << endl;
                 return;
             }else{
@@ -699,7 +760,6 @@
                     agenda.setPaciente("------", codigo);
                     agenda.setUsuario("------", codigo);
                     setFile<Agenda>(agenda, arqAgenda);
-                    //ordena<Agenda, vector<Agenda>>(arqAgenda);
                     cout << endl << "CONSULTA CANCELADA COM SUCESSO!" << endl;
                     return;
                 }
@@ -709,6 +769,8 @@
         }while(!controle);
     }
 
+    //FUNÇÃO QUE LISTA A AGENDA DE UM ESPECIALISTA, ATRAVÉS DE SUA CHAVE E UM
+    //DETERMINADO DIA DO CALENDARIO
     Agenda Clinica::listaAgenda(const string& funcionario, const string& arqAgenda, const string& operacao){
         string chave;
         Especialista especialista;
@@ -766,9 +828,14 @@
     }
     
     void Clinica::opcoesdaConta(){
-
+        //FUNÇÃO NÃO IMPLEMENTADA
+        //QUE DEVERIA DISPONIBILIZAR
+        //AO USUARIO GERAL AS OPÇÕES
+        //DE ALTERAR DADOS DE SUA CONTA
+        //OU EXCLUI-LA
     }
 
+    //FUNÇÃO QUE CRIA ARQUIVOS CASO NÃO EXISTAM
     void Clinica::setFiles(){
         if(!fs::exists("usuarios.bin"))
         {
