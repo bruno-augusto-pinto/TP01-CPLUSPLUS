@@ -1,6 +1,10 @@
 #include "agenda.hpp"
 
 Agenda::Agenda(){
+  //INSERÇÃO DE VALORES CONSTANTES
+  //OU PRIMORDIAIS PARA EXECUÇÃO
+  //DE UMA AGENDA QUE NÃO EXISTE 
+  //AINDA NO ARQUIVO
   horario[0] = "08H-10H";
   horario[1] = "10H-12H";
   horario[2] = "13H-15H";
@@ -36,6 +40,7 @@ Data Agenda::getData(){
 }
 
 string Agenda::printData(){
+  //CONCATENAÇÃO DE DADA EM STRING COM / PARA FORMATAÇÃO
   string dataFormatada = std::to_string(data.getDia()) + "/" + std::to_string(data.getMes()) + "/" + std::to_string(data.getAno());
   return dataFormatada;
 }
@@ -69,6 +74,7 @@ string Agenda::getHorario(const int& codigo){
 }
 
 void Agenda::setChave(){
+  //CONCATENAÇÃO DE CHAVE DE FUNCIONARIO COM O DIA DA AGENDA
   string chave = funcionario + ":" + std::to_string(data.getDia()) + "/" + std::to_string(data.getMes()) + "/" + std::to_string(data.getAno());
   this->chave.setChave(chave);
 }
@@ -86,6 +92,7 @@ string Agenda::getUsuario(const int& codigo){
 }
 
 void Agenda::imprimeAgenda(){
+  //IMPRESSÃO DA AGENDA PARA VERIFICAÇÃO 
     printf("|%6s|%7s|%10s|", "CODIGO", "HORARIO", "DISPONIBILIDADE");
     cout << endl;
     string disponibilidade;

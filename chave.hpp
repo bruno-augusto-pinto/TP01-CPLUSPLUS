@@ -9,9 +9,12 @@
 using namespace std; 
 
 class Chave{
+
+    //DEFINIÇÃO DOS ATRIBUTOS PRIVADOS
     private:
         string chave;
 
+    //DEFINIÇÃO DOS MÉTODOS PÚBLICOS
     public:
         Chave();
 

@@ -5,6 +5,8 @@
 #include "chave.hpp"
 
 class Pagamento: public Chave{
+
+    //DEFINIÇÃO DOS ATRIBUTOS PRIVADOS
     private:
       Data vencimento;
       Data pagamento;
@@ -13,6 +15,7 @@ class Pagamento: public Chave{
       string tipo;
       string usuario;
 
+    //DEFINIÇÃO DOS MÉTODOS PÚBLICOS
     public:
 
     Pagamento();

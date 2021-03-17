@@ -6,10 +6,13 @@
 using namespace std; 
 
 class Funcionario: public Pessoa{
+
+    //DEFINIÇÃO DOS ATRIBUTOS PRIVADOS
     private:
         Pessoa pessoa;
         char tipo;
-        
+
+    //DEFINIÇÃO DOS MÉTODOS PÚBLICOS    
     public:
         Funcionario();
 

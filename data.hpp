@@ -6,11 +6,14 @@
 using namespace std; 
 
 class Data{
+
+    //DEFINIÇÃO DOS ATRIBUTOS PRIVADOS
     private:
         int dia;
         int mes;
         int ano;
 
+    //DEFINIÇÃO DOS MÉTODOS PÚBLICOS
     public:
         Data();
 

@@ -6,12 +6,15 @@
 #include "vector" 
 
 class FolhadePonto: public Chave{
+
+    //DEFINIÇÃO DOS ATRIBUTOS PRIVADOS
     private:
         Chave chave;
         vector<string> observacao;
         vector<Data> data;
         int tamanho;
-        
+
+    //DEFINIÇÃO DOS MÉTODOS PÚBLICOS    
     public:
         FolhadePonto();
 

@@ -5,6 +5,8 @@
 #include "chave.hpp"
 
 class Agenda: public Chave{
+  
+    //DEFINIÇÃO DOS ATRIBUTOS PRIVADOS
     private:
       Data data;
       string horario[5];
@@ -15,6 +17,7 @@ class Agenda: public Chave{
       string funcionario;
       Chave chave;
 
+    //DEFINIÇÃO DOS MÉTODOS PÚBLICOS
     public:
         Agenda();
 
@@ -57,4 +60,4 @@ class Agenda: public Chave{
         friend istream& operator >>(istream&, Agenda&);
 };
 
-#endif
+#endifA

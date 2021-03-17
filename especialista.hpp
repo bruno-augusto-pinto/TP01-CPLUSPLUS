@@ -6,9 +6,12 @@
 using namespace std; 
 
 class Especialista: public Funcionario{
+
+    //DEFINIÇÃO DOS ATRIBUTOS PRIVADOS
     private:
         Funcionario funcionario;
-        
+
+    //DEFINIÇÃO DOS MÉTODOS PÚBLICOS    
     public:
         Especialista();
 

@@ -8,6 +8,7 @@ using namespace std;
 
 class Clinica {
 
+    //DEFINIÇÃO DOS MÉTODOS PÚBLICOS
     public:
 
         Clinica();

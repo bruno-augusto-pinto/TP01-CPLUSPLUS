@@ -6,11 +6,14 @@
 using namespace std; 
 
 class Pessoa: public Chave{
+
+    //DEFINIÇÃO DOS ATRIBUTOS PRIVADOS
     private:
         string nome;
         string CPF;
         Chave chave;
 
+    //DEFINIÇÃO DOS MÉTODOS PÚBLICOS
     public:
         Pessoa();
 
